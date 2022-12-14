@@ -1,0 +1,82 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/altera/16.0
+vUART_rx
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1666056664
+!i10b 1
+!s100 @dLZ:Kg9Jd>?YHckDL[=]1
+Ihll:MDW:9WOog8UC?niUk3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 UART_rx_sv_unit
+S1
+Z3 dH:/ECE 551/HW3/Q4
+w1666056660
+8H:/ECE 551/HW3/Q4/UART_rx.sv
+FH:/ECE 551/HW3/Q4/UART_rx.sv
+L0 1
+Z4 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z5 !s108 1666056664.000000
+!s107 H:/ECE 551/HW3/Q4/UART_rx.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HW3/Q4/UART_rx.sv|
+!i113 1
+Z6 o-work work -sv
+n@u@a@r@t_rx
+vUART_tb
+R0
+R1
+!i10b 1
+!s100 DEk`iLGOXPHag0e[JmSgH0
+Ih5JCUzSzBdDk?nE`D9_gW3
+R2
+!s105 UART_tb_sv_unit
+S1
+R3
+w1665978645
+8H:/ECE 551/HW3/Q4/UART_tb.sv
+FH:/ECE 551/HW3/Q4/UART_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HW3/Q4/UART_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HW3/Q4/UART_tb.sv|
+!i113 1
+R6
+n@u@a@r@t_tb
+vUART_tx
+R0
+R1
+!i10b 1
+!s100 a^l?0^ch5H5MzZNH5o<Om0
+IM5zIDa8leFdFLh:nJVWWV2
+R2
+!s105 UART_tx_sv_unit
+S1
+R3
+w1666055687
+8H:/ECE 551/HW3/Q4/UART_tx.sv
+FH:/ECE 551/HW3/Q4/UART_tx.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HW3/Q4/UART_tx.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HW3/Q4/UART_tx.sv|
+!i113 1
+R6
+n@u@a@r@t_tx

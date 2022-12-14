@@ -1,0 +1,191 @@
+module SPI_mnrch(clk,rst_n,MISO,wrt,wt_data,done,rd_data,MOSI,SS_n,SCLK);
+
+//primary input and outputs
+input clk,rst_n;
+input MISO,wrt; 
+input [15:0] wt_data; 
+output logic done,SS_n; 
+output MOSI,SCLK; 
+output [15:0] rd_data;
+
+//intermidiate signals
+//to create SCLK
+logic [4:0] div_sclk; 
+//gets next MISO
+logic MISO_sample;
+//used to shift to next MISO
+logic [15:0] in_shft_reg;
+//flop for rd_data output
+logic [15:0] shft_reg; 
+//to check how many bits are tranferred
+logic [3:0] cnt_bit; 
+logic set_done; 
+logic clr_done; 
+logic rst_cnt;
+logic shft; 
+logic sample;
+
+//States for State Machine
+typedef enum reg [1:0] {FRONT_PORCH,IDLE,WORKING,BACK_PORCH} state_t;
+state_t state, nxt_state;
+
+// SCLK counter
+always_ff @(posedge clk, negedge rst_n)
+  if (!rst_n)
+     div_sclk <= 5'b10111;
+  else if (rst_cnt)
+     div_sclk <= 5'b10111;
+  else
+     div_sclk <= div_sclk + 1;
+
+//SCLK value
+assign SCLK = div_sclk[4];
+
+//for MISO sample
+always_ff @(posedge clk, negedge rst_n)
+  if (!rst_n)
+     MISO_sample <= 1'b0;
+  else if (sample)
+     MISO_sample <= MISO;
+
+
+//for shift sample
+assign in_shft_reg = {shft_reg[14:0], MISO_sample};
+
+//flop for shift reg
+always_ff @(posedge clk, negedge rst_n)
+  if (!rst_n)
+     shft_reg <= 16'h0000;
+  else if (wrt)
+     shft_reg <= wt_data;
+  else if (shft)
+     shft_reg <= in_shft_reg; 
+
+// assign rd_data output
+assign rd_data = shft_reg;
+
+// MOSI value 
+assign MOSI = shft_reg[15];
+
+//Bit Counter
+always_ff @(posedge clk, negedge rst_n)
+  if (!rst_n)
+     cnt_bit <= 4'b0000;
+  else if (cnt_bit == 15 || state == IDLE)
+     cnt_bit <= 4'b0000;
+  else if (shft)
+     cnt_bit <= cnt_bit + 1;
+
+
+//Flop for State Machine
+always_ff @(posedge clk, negedge rst_n)
+  if (~rst_n)
+     state <= IDLE;
+  else
+     state <= nxt_state;
+
+//State Machine
+always_comb begin
+  set_done = 1'b1;
+  sample = 1'b0;
+  shft = 1'b0;
+  rst_cnt = 1'b1;
+  clr_done = 1'b0;
+  nxt_state = IDLE;
+
+  case (state)
+  //Transmit date if not done is 0
+    IDLE : if (wrt) begin
+	    set_done = 1'b0; 
+       rst_cnt = 1'b0;
+       clr_done = 1'b1;
+       nxt_state = FRONT_PORCH;
+     end
+    //Whenever SCLK goes high then taking sample of MISO and keep on transmitting
+    FRONT_PORCH : if (div_sclk == 5'b01111) begin 
+       sample = 1'b1;
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+       nxt_state = WORKING;
+     end
+     else begin
+       nxt_state = FRONT_PORCH;
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+     end
+  
+     WORKING : if (div_sclk == 5'b01111) begin 
+       sample = 1'b1;
+       set_done = 1'b0; 
+       rst_cnt = 1'b0;
+       nxt_state = WORKING;
+     end
+     else if (div_sclk == 5'b11111) begin
+       shft = 1'b1; 
+       set_done = 1'b0; 
+       rst_cnt = 1'b0;
+       nxt_state = WORKING;
+     end 
+     //if all bits are transmitted then go back ti previous Back Porch
+     else if (cnt_bit == 15) begin
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+       nxt_state = BACK_PORCH;
+     end
+     //Elsekeep on transmiting
+     else begin
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+       nxt_state = WORKING;
+     end 
+    //If SCLK is low go to IDLE state
+     BACK_PORCH : if (div_sclk == 5'b11111) begin
+       nxt_state = IDLE;
+       shft = 1;
+     end
+     else if (div_sclk == 5'b01111) begin
+       nxt_state = BACK_PORCH;
+       sample = 1;
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+     end
+     //keep transmission going until BACK PORCH over
+     else begin
+       nxt_state = BACK_PORCH; 
+       set_done = 1'b0;
+       rst_cnt = 1'b0;
+     end
+
+     default : begin
+       set_done = 1'b1;
+       sample = 1'b0;
+       shft = 1'b0;
+       rst_cnt = 1'b1;
+       clr_done = 1'b0;
+       nxt_state = IDLE;
+     end
+  endcase
+end
+
+//flops for SS_n and done
+always_ff @(posedge clk, negedge rst_n)
+  if (!rst_n) begin
+    SS_n <= 1'b1;
+    done <= 1'b0;
+  end
+  else if (set_done) begin
+    SS_n <= 1'b1;
+    done <= 1'b1;
+  end
+  else if (clr_done) begin 
+    SS_n <= 1'b0;
+    done <= 1'b0;
+  end
+  else begin
+  //State machine defaults set_done to 1
+    SS_n <= 1'b0; 
+     //When it isn't 1, done/SS_n should be deasserted
+    done <= 1'b0;
+  end
+
+endmodule  

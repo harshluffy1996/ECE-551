@@ -1,0 +1,33 @@
+module balance_cntrl(clk,rst_n,vld,rider_off,en_steer,ptch, ptch_rt,steer_pot,pwr_up,too_fast, lft_spd,rght_spd);
+
+//Primary input and outputs
+
+input clk,rst_n, pwr_up;
+input rider_off; //to check rider condition
+input en_steer;
+input vld; // tells when a new valid inertial reading is ready
+input[15:0] ptch,ptch_rt;
+input[11:0] steer_pot;
+
+//To indicate when the speed is too high
+output too_fast;
+// 11-bit unsigned speed of the motor 
+output [11:0] lft_spd;
+output [11:0] rght_spd; 
+
+//Parameterised fast sim
+parameter fast_sim=1;
+
+//Intermediate signals
+reg [7:0]ss_tmr;
+reg signed [11:0]PID_cntrl;
+
+//Instantiating PID
+PID PID_int(.clk(clk),.rst_n(rst_n),.vld(vld),.rider_off(rider_off),
+		.pwr_up(pwr_up),.ptch(ptch),.ptch_rt(ptch_rt),.ss_tmr(ss_tmr));
+
+//Instantiating Segway
+segwayMath segway_int(.clk(clk),.rst_n(rst_n),.vld(vld),.pwr_up(pwr_up),
+		      .ss_tmr(ss_tmr),.PID_cntrl(PID_cntrl),.en_steer(en_steer),.steer_pot(steer_pot),
+		      .lft_spd(lft_spd),.rght_spd(rght_spd),.too_fast(too_fast));
+endmodule 

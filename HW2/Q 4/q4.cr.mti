@@ -1,0 +1,14 @@
+{H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath_tb.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath_tb.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module segwayMath_tb
+
+Top level modules:
+	segwayMath_tb
+
+} {} {}} {H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath.sv} {0 {vlog -work work -sv -stats=none {H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module segwayMath
+** Error: H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath.sv(1): Identifier must be declared with a port mode: lft_torque.
+** Error: H:/ECE 551/HomeWorks/HW2/Q 4/SegwayMath.sv(1): Identifier must be declared with a port mode: rght_torque.
+
+} {4.0 6.0} {}}

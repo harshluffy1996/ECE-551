@@ -1,0 +1,86 @@
+module steer_en_SM(clk,rst_n,tmr_full,sum_gt_min,sum_lt_min,diff_gt_1_4,
+                   diff_gt_15_16,clr_tmr,en_steer,rider_off);
+
+input clk;				// 50MHz clock
+input rst_n;				// Active low asynch reset
+input tmr_full;				// asserted when timer reaches 1.3 sec
+input sum_gt_min;			// asserted when left and right load cells together exceed min rider weight
+input sum_lt_min;			// asserted when left_and right load cells are less than min_rider_weight
+input diff_gt_1_4;			// asserted if load cell difference exceeds 1/4 sum (rider not situated)
+input diff_gt_15_16;			// asserted if load cell difference is great (rider stepping off)
+output logic clr_tmr;			// clears the 1.3sec timer
+output logic en_steer;			// enables steering (goes to balance_cntrl)
+output logic rider_off;			// held high in intitial state when waiting for sum_gt_min
+  
+//3 States for our State Machine
+typedef enum reg [1:0] {IDLE,WAIT,STEER_EN} state_t;
+state_t state, nxt_state;
+
+always_ff @(posedge clk, negedge rst_n)
+    if (!rst_n)
+      //Defualt state is IDLE
+      state <= IDLE;
+    else
+      //Next state on clock edge
+      state <= nxt_state; 
+
+
+always_comb begin
+//setting it as defaults to avoid flops
+en_steer = 1'b0; 
+nxt_state = IDLE; 
+clr_tmr = 0;
+en_steer = 0;
+rider_off = 0;
+nxt_state = IDLE;
+
+  	case(state)
+		// Next State if Min requirement mate
+		IDLE: if (sum_gt_min) begin 
+			clr_tmr = 1'b1;
+			nxt_state =  WAIT;
+		end
+		else
+			rider_off = 1;
+
+		// If the load below minimum weight, get back to IDLE and rider is OFF
+		WAIT: if (sum_lt_min) begin 
+			rider_off = 1'b1;
+			nxt_state = IDLE;
+		end
+		// If the difference between lft load and right load is too high, stay in WAIT
+		else if (diff_gt_1_4) begin 
+			clr_tmr = 1'b1;
+			nxt_state = WAIT; 
+		
+		end
+		//checking timer is full or not
+		else if (tmr_full) begin 
+			en_steer = 1'b1;
+			nxt_state = STEER_EN;
+		end
+		// If there is still a weight difference, have to stay in WAIT state
+		else if (!diff_gt_1_4) begin 
+			nxt_state = WAIT;
+		end
+		// sum is less than rider weight
+		STEER_EN: if (sum_lt_min) begin 
+			rider_off = 1'b1;
+			nxt_state = IDLE;
+		end
+		// The rider off, clear the timer and go back to WAIT
+		else if (diff_gt_15_16) begin 
+			clr_tmr = 1'b1; 
+			nxt_state = WAIT;
+		end
+		// steer enbled if rider is ON
+		else if (!diff_gt_15_16) begin 
+			en_steer = 1'b1;
+			nxt_state = STEER_EN;
+		end
+		default:nxt_state = IDLE;
+		
+	endcase
+  end
+
+endmodule 

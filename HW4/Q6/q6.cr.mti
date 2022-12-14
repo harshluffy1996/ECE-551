@@ -1,0 +1,22 @@
+{H:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SPI_mnrch
+
+Top level modules:
+	SPI_mnrch
+
+} {} {}} {H:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SPI_mnrch_tb
+
+Top level modules:
+	SPI_mnrch_tb
+
+} {} {}} {H:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SPI_iNEMO1
+
+Top level modules:
+	SPI_iNEMO1
+
+} {} {}}

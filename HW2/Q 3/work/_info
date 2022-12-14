@@ -1,0 +1,102 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/pandi/OneDrive/Documents/ECE551/Assignments/Ex08
+vfull_adder_1bit
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1664855141
+!i10b 1
+!s100 GO2=?<mFg7YmH7mEY;c953
+IMO;zEidZo=^coGRf=3O5:2
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+Z3 !s105 adder_sv_unit
+S1
+Z4 dH:/ECE 551/HW2/Q 3
+Z5 w1664852858
+Z6 8H:/ECE 551/HW2/Q 3/adder.sv
+Z7 FH:/ECE 551/HW2/Q 3/adder.sv
+L0 15
+Z8 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z9 !s108 1664855141.000000
+Z10 !s107 H:/ECE 551/HW2/Q 3/adder.sv|
+Z11 !s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HW2/Q 3/adder.sv|
+!i113 1
+Z12 o-work work -sv
+vfull_adder_behavioral
+R0
+R1
+!i10b 1
+!s100 4mL@FLg0hD<=M_GR@?<9<0
+Ij<58f94BYTAeGh8^NS;aB3
+R2
+R3
+S1
+R4
+R5
+R6
+R7
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+vfull_adder_dataflow
+R0
+R1
+!i10b 1
+!s100 m`_leG=]Z9iMjJTI=Ef;B0
+I4`mUK0iNK?`D?W8gD[`J_3
+R2
+R3
+S1
+R4
+R5
+R6
+R7
+L0 6
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+vfull_adder_tb
+R0
+R1
+!i10b 1
+!s100 =k^A9eCMn^zk@JO80>Ynz0
+IgXma0:YYb>7Wf:l]Bh;kP1
+R2
+!s105 adder_tb_sv_unit
+S1
+R4
+w1664852855
+8H:/ECE 551/HW2/Q 3/adder_tb.sv
+FH:/ECE 551/HW2/Q 3/adder_tb.sv
+L0 1
+R8
+r1
+!s85 0
+31
+R9
+!s107 H:/ECE 551/HW2/Q 3/adder_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HW2/Q 3/adder_tb.sv|
+!i113 1
+R12

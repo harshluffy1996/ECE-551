@@ -1,0 +1,104 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/altera/16.0
+vbalance_cntrl
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+!s110 1668811539
+!i10b 1
+!s100 MHC7o<9?^jG]7_Fne^IOm2
+IgM>^3Q4OSecChSf:oH^cT0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+!s105 balance_cntrl_sv_unit
+S1
+Z2 dH:/ECE 551/HomeWorks/HW5/ani
+w1668794761
+8H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl.sv
+FH:/ECE 551/HomeWorks/HW5/ani/balance_cntrl.sv
+L0 1
+Z3 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z4 !s108 1668811539.000000
+!s107 H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl.sv|
+!i113 1
+Z5 o-work work -sv
+vbalance_cntrl_chk_tb
+R0
+Z6 !s110 1668811540
+!i10b 1
+!s100 @d>E1>741AZb4ofBQ8m<43
+I:d?nL`bg=0?=0M13Xd>c@2
+R1
+!s105 balance_cntrl_chk_tb_sv_unit
+S1
+R2
+w1668794766
+8H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl_chk_tb.sv
+FH:/ECE 551/HomeWorks/HW5/ani/balance_cntrl_chk_tb.sv
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+!s107 H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl_chk_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW5/ani/balance_cntrl_chk_tb.sv|
+!i113 1
+R5
+vPID
+R0
+R6
+!i10b 1
+!s100 P9:W8jWRl8f:eVm;g3[Wi3
+I55RCaKNI5dR?WI3NKz:N;3
+R1
+!s105 PID_sv_unit
+S1
+R2
+w1668810793
+8H:/ECE 551/HomeWorks/HW5/ani/PID.sv
+FH:/ECE 551/HomeWorks/HW5/ani/PID.sv
+L0 2
+R3
+r1
+!s85 0
+31
+Z7 !s108 1668811540.000000
+!s107 H:/ECE 551/HomeWorks/HW5/ani/PID.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW5/ani/PID.sv|
+!i113 1
+R5
+n@p@i@d
+vSegwayMath
+R0
+R6
+!i10b 1
+!s100 L0MB??1`zDViH<MLH@]5[2
+I9S^`b?cT5;I6m3<?F`JgG0
+R1
+!s105 SegwayMath_sv_unit
+S1
+R2
+w1668810794
+8H:/ECE 551/HomeWorks/HW5/ani/SegwayMath.sv
+FH:/ECE 551/HomeWorks/HW5/ani/SegwayMath.sv
+L0 1
+R3
+r1
+!s85 0
+31
+R7
+!s107 H:/ECE 551/HomeWorks/HW5/ani/SegwayMath.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW5/ani/SegwayMath.sv|
+!i113 1
+R5
+n@segway@math

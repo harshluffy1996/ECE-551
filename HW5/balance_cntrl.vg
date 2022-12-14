@@ -1,0 +1,2311 @@
+/////////////////////////////////////////////////////////////
+// Created by: Synopsys DC Expert(TM) in wire load mode
+// Version   : T-2022.03-SP3
+// Date      : Sat Nov 19 15:28:16 2022
+/////////////////////////////////////////////////////////////
+
+
+module balance_cntrl ( clk, rst_n, vld, ptch, ptch_rt, pwr_up, rider_off, 
+        steer_pot, en_steer, lft_spd, rght_spd, too_fast, ss_tmr );
+  input [15:0] ptch;
+  input [15:0] ptch_rt;
+  input [11:0] steer_pot;
+  output [11:0] lft_spd;
+  output [11:0] rght_spd;
+  output [7:0] ss_tmr;
+  input clk, rst_n, vld, pwr_up, rider_off, en_steer;
+  output too_fast;
+  wire   n818, n820, n821, n819, n822, n823, n824, n827, n829, n830, n831,
+         n832, n833, n834, n835, n836, n837, n838, n840, n841, n839,
+         \PID_int/n16 , \PID_int/N25 , \PID_int/N26 , \PID_int/N27 ,
+         \PID_int/N29 , \PID_int/N30 , \PID_int/N31 , \PID_int/N32 ,
+         \PID_int/n75 , \PID_int/n74 , \PID_int/n73 , \PID_int/n72 ,
+         \PID_int/n71 , \PID_int/n70 , \PID_int/n69 , \PID_int/n68 ,
+         \PID_int/n67 , \PID_int/n66 , \PID_int/n65 , \PID_int/n64 ,
+         \PID_int/n63 , \PID_int/n62 , \PID_int/n61 , \PID_int/n60 ,
+         \PID_int/n59 , \PID_int/n58 , \PID_int/n57 , \PID_int/n15 ,
+         \PID_int/N60 , \PID_int/N59 , \PID_int/N58 , \PID_int/N57 ,
+         \PID_int/N56 , \PID_int/N55 , \PID_int/N54 , \PID_int/N53 ,
+         \PID_int/N52 , \PID_int/N51 , \PID_int/N50 , \PID_int/N49 ,
+         \PID_int/N48 , \PID_int/N47 , \PID_int/N46 , \PID_int/N45 ,
+         \PID_int/N44 , \PID_int/N43 , \PID_int/I_term[14] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[4] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[5] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[6] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[7] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[10] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[8] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[9] ,
+         \segwayMath_int/add_43/carry[7] , \segwayMath_int/add_43/carry[4] ,
+         \segwayMath_int/add_43/carry[3] , \segwayMath_int/add_43/carry[1] ,
+         \segwayMath_int/steer_control_div[1] ,
+         \segwayMath_int/steer_control_div[2] ,
+         \segwayMath_int/steer_control_div[3] ,
+         \segwayMath_int/steer_control_div[4] ,
+         \segwayMath_int/steer_control_div[5] ,
+         \segwayMath_int/steer_control_div[6] ,
+         \segwayMath_int/steer_control_div[7] ,
+         \segwayMath_int/steer_control_div[8] ,
+         \segwayMath_int/steer_pot_inter[10] ,
+         \segwayMath_int/steer_pot_inter[4] ,
+         \segwayMath_int/steer_pot_inter[5] ,
+         \segwayMath_int/steer_pot_inter[6] ,
+         \segwayMath_int/steer_pot_inter[7] ,
+         \segwayMath_int/steer_pot_inter[8] ,
+         \segwayMath_int/steer_pot_inter[9] , \segwayMath_int/N74 ,
+         \segwayMath_int/N73 , \segwayMath_int/N72 , \segwayMath_int/N71 ,
+         \segwayMath_int/N70 , \segwayMath_int/N69 , \segwayMath_int/N68 ,
+         \segwayMath_int/N67 , \segwayMath_int/N66 , \segwayMath_int/N65 ,
+         \segwayMath_int/N45 , \segwayMath_int/N44 , \segwayMath_int/N43 ,
+         \segwayMath_int/N42 , \segwayMath_int/N41 , \segwayMath_int/N40 ,
+         \segwayMath_int/N39 , \segwayMath_int/N38 , \segwayMath_int/N37 ,
+         \segwayMath_int/N36 , \segwayMath_int/N35 ,
+         \segwayMath_int/sub_51/carry[1] , \segwayMath_int/add_49/carry[1] ,
+         \segwayMath_int/add_49/carry[2] , \segwayMath_int/add_49/carry[3] ,
+         \segwayMath_int/add_49/carry[4] , \segwayMath_int/add_49/carry[5] ,
+         \segwayMath_int/add_49/carry[6] , \segwayMath_int/add_49/carry[7] ,
+         \segwayMath_int/add_49/carry[10] , \segwayMath_int/add_49/carry[8] ,
+         \segwayMath_int/add_49/carry[9] , \segwayMath_int/add_49/carry[11] ,
+         \segwayMath_int/add_49/carry[12] ,
+         \segwayMath_int/mult_35/CARRYB[6][5] ,
+         \segwayMath_int/mult_35/SUMB[7][5] ,
+         \segwayMath_int/mult_35/CARRYB[1][3] ,
+         \segwayMath_int/mult_35/CARRYB[2][3] ,
+         \segwayMath_int/mult_35/CARRYB[3][2] ,
+         \segwayMath_int/mult_35/CARRYB[4][2] ,
+         \segwayMath_int/mult_35/SUMB[1][4] ,
+         \segwayMath_int/mult_35/SUMB[2][3] ,
+         \segwayMath_int/mult_35/SUMB[3][3] ,
+         \segwayMath_int/mult_35/SUMB[4][3] ,
+         \segwayMath_int/mult_35/ab[2][3] ,
+         \segwayMath_int/mult_35/CARRYB[5][2] ,
+         \segwayMath_int/mult_35/CARRYB[1][9] ,
+         \segwayMath_int/mult_35/CARRYB[2][9] ,
+         \segwayMath_int/mult_35/CARRYB[3][8] ,
+         \segwayMath_int/mult_35/CARRYB[4][7] ,
+         \segwayMath_int/mult_35/CARRYB[5][6] ,
+         \segwayMath_int/mult_35/SUMB[1][10] ,
+         \segwayMath_int/mult_35/SUMB[2][9] ,
+         \segwayMath_int/mult_35/SUMB[3][9] ,
+         \segwayMath_int/mult_35/SUMB[4][8] ,
+         \segwayMath_int/mult_35/SUMB[5][7] ,
+         \segwayMath_int/mult_35/SUMB[6][6] ,
+         \segwayMath_int/mult_35/ab[2][9] , \segwayMath_int/mult_35/A1[7] ,
+         \segwayMath_int/mult_35/SUMB[1][1] ,
+         \segwayMath_int/mult_35/SUMB[1][2] ,
+         \segwayMath_int/mult_35/SUMB[1][3] ,
+         \segwayMath_int/mult_35/SUMB[2][1] ,
+         \segwayMath_int/mult_35/SUMB[2][2] ,
+         \segwayMath_int/mult_35/SUMB[2][10] ,
+         \segwayMath_int/mult_35/SUMB[3][1] ,
+         \segwayMath_int/mult_35/SUMB[3][2] ,
+         \segwayMath_int/mult_35/SUMB[3][10] ,
+         \segwayMath_int/mult_35/SUMB[4][1] ,
+         \segwayMath_int/mult_35/SUMB[4][2] ,
+         \segwayMath_int/mult_35/SUMB[4][9] ,
+         \segwayMath_int/mult_35/SUMB[4][10] ,
+         \segwayMath_int/mult_35/SUMB[5][1] ,
+         \segwayMath_int/mult_35/SUMB[5][2] ,
+         \segwayMath_int/mult_35/SUMB[5][8] ,
+         \segwayMath_int/mult_35/SUMB[5][9] ,
+         \segwayMath_int/mult_35/SUMB[5][10] ,
+         \segwayMath_int/mult_35/SUMB[6][1] ,
+         \segwayMath_int/mult_35/SUMB[6][7] ,
+         \segwayMath_int/mult_35/SUMB[6][8] ,
+         \segwayMath_int/mult_35/SUMB[6][9] ,
+         \segwayMath_int/mult_35/SUMB[6][10] ,
+         \segwayMath_int/mult_35/SUMB[7][1] ,
+         \segwayMath_int/mult_35/SUMB[7][6] ,
+         \segwayMath_int/mult_35/SUMB[7][7] ,
+         \segwayMath_int/mult_35/SUMB[7][8] ,
+         \segwayMath_int/mult_35/SUMB[7][9] ,
+         \segwayMath_int/mult_35/SUMB[7][10] ,
+         \segwayMath_int/mult_35/CARRYB[1][0] ,
+         \segwayMath_int/mult_35/CARRYB[1][1] ,
+         \segwayMath_int/mult_35/CARRYB[1][2] ,
+         \segwayMath_int/mult_35/CARRYB[1][10] ,
+         \segwayMath_int/mult_35/CARRYB[2][0] ,
+         \segwayMath_int/mult_35/CARRYB[2][1] ,
+         \segwayMath_int/mult_35/CARRYB[2][2] ,
+         \segwayMath_int/mult_35/CARRYB[2][10] ,
+         \segwayMath_int/mult_35/CARRYB[3][0] ,
+         \segwayMath_int/mult_35/CARRYB[3][1] ,
+         \segwayMath_int/mult_35/CARRYB[3][9] ,
+         \segwayMath_int/mult_35/CARRYB[3][10] ,
+         \segwayMath_int/mult_35/CARRYB[4][0] ,
+         \segwayMath_int/mult_35/CARRYB[4][1] ,
+         \segwayMath_int/mult_35/CARRYB[4][8] ,
+         \segwayMath_int/mult_35/CARRYB[4][9] ,
+         \segwayMath_int/mult_35/CARRYB[4][10] ,
+         \segwayMath_int/mult_35/CARRYB[5][0] ,
+         \segwayMath_int/mult_35/CARRYB[5][1] ,
+         \segwayMath_int/mult_35/CARRYB[5][7] ,
+         \segwayMath_int/mult_35/CARRYB[5][8] ,
+         \segwayMath_int/mult_35/CARRYB[5][9] ,
+         \segwayMath_int/mult_35/CARRYB[5][10] ,
+         \segwayMath_int/mult_35/CARRYB[6][0] ,
+         \segwayMath_int/mult_35/CARRYB[6][1] ,
+         \segwayMath_int/mult_35/CARRYB[6][6] ,
+         \segwayMath_int/mult_35/CARRYB[6][7] ,
+         \segwayMath_int/mult_35/CARRYB[6][8] ,
+         \segwayMath_int/mult_35/CARRYB[6][9] ,
+         \segwayMath_int/mult_35/CARRYB[6][10] ,
+         \segwayMath_int/mult_35/CARRYB[7][0] ,
+         \segwayMath_int/mult_35/CARRYB[7][5] ,
+         \segwayMath_int/mult_35/CARRYB[7][6] ,
+         \segwayMath_int/mult_35/CARRYB[7][7] ,
+         \segwayMath_int/mult_35/CARRYB[7][8] ,
+         \segwayMath_int/mult_35/CARRYB[7][9] ,
+         \segwayMath_int/mult_35/CARRYB[7][10] ,
+         \segwayMath_int/mult_35/ab[1][11] , \segwayMath_int/mult_35/ab[2][0] ,
+         \segwayMath_int/mult_35/ab[2][1] , \segwayMath_int/mult_35/ab[2][2] ,
+         \segwayMath_int/mult_35/ab[2][10] ,
+         \segwayMath_int/mult_35/ab[2][11] , \segwayMath_int/mult_35/ab[3][0] ,
+         \segwayMath_int/mult_35/ab[3][1] , \segwayMath_int/mult_35/ab[3][2] ,
+         \segwayMath_int/mult_35/ab[3][9] , \segwayMath_int/mult_35/ab[3][10] ,
+         \segwayMath_int/mult_35/ab[3][11] , \segwayMath_int/mult_35/ab[4][0] ,
+         \segwayMath_int/mult_35/ab[4][1] , \segwayMath_int/mult_35/ab[4][2] ,
+         \segwayMath_int/mult_35/ab[4][8] , \segwayMath_int/mult_35/ab[4][9] ,
+         \segwayMath_int/mult_35/ab[4][10] ,
+         \segwayMath_int/mult_35/ab[4][11] , \segwayMath_int/mult_35/ab[5][0] ,
+         \segwayMath_int/mult_35/ab[5][1] , \segwayMath_int/mult_35/ab[5][2] ,
+         \segwayMath_int/mult_35/ab[5][7] , \segwayMath_int/mult_35/ab[5][8] ,
+         \segwayMath_int/mult_35/ab[5][9] , \segwayMath_int/mult_35/ab[5][10] ,
+         \segwayMath_int/mult_35/ab[5][11] , \segwayMath_int/mult_35/ab[6][0] ,
+         \segwayMath_int/mult_35/ab[6][1] , \segwayMath_int/mult_35/ab[6][2] ,
+         \segwayMath_int/mult_35/ab[6][6] , \segwayMath_int/mult_35/ab[6][7] ,
+         \segwayMath_int/mult_35/ab[6][8] , \segwayMath_int/mult_35/ab[6][9] ,
+         \segwayMath_int/mult_35/ab[6][10] ,
+         \segwayMath_int/mult_35/ab[6][11] , \segwayMath_int/mult_35/ab[7][0] ,
+         \segwayMath_int/mult_35/ab[7][1] , \segwayMath_int/mult_35/ab[7][5] ,
+         \segwayMath_int/mult_35/ab[7][6] , \segwayMath_int/mult_35/ab[7][7] ,
+         \segwayMath_int/mult_35/ab[7][8] , \segwayMath_int/mult_35/ab[7][9] ,
+         \segwayMath_int/mult_35/ab[7][10] , n7, n8, n10, n13, n15, n17, n18,
+         n19, n21, n22, n25, n26, n27, n29, n30, n31, n32, n36, n39, n41, n42,
+         n44, n45, n46, n47, n49, n51, n52, n53, n55, n56, n57, n58, n60, n62,
+         n63, n65, n66, n67, n68, n69, n70, n71, n72, n73, n74, n75, n78, n79,
+         n80, n81, n82, n83, n84, n85, n86, n87, n88, n90, n91, n92, n93, n94,
+         n95, n97, n98, n100, n101, n102, n103, n104, n106, n107, n108, n109,
+         n110, n111, n112, n113, n114, n115, n116, n117, n118, n119, n120,
+         n121, n128, n129, n130, n131, n133, n134, n135, n136, n137, n138,
+         n139, n140, n141, n142, n143, n144, n145, n146, n147, n149, n150,
+         n156, n159, n160, n165, n166, n167, n168, n169, n170, n171, n172,
+         n173, n174, n175, n176, n177, n178, n181, n182, n183, n184, n185,
+         n186, n190, n191, n193, n194, n195, n196, n197, n198, n199, n200,
+         n201, n202, n203, n204, n205, n206, n207, n208, n209, n210, n211,
+         n212, n213, n214, n215, n216, n217, n218, n219, n220, n221, n222,
+         n223, n224, n225, n226, n227, n228, n229, n230, n231, n232, n233,
+         n235, n236, n237, n238, n239, n240, n241, n246, n249, n250, n252,
+         n253, n254, n255, n256, n257, n258, n259, n261, n264, n268, n270,
+         n271, n272, n273, n274, n275, n283, n284, n285, n286, n287, n288,
+         n292, n293, n294, n295, n296, n298, n300, n301, n302, n303, n304,
+         n305, n306, n307, n308, n311, n312, n313, n314, n315, n316, n317,
+         n318, n319, n320, n321, n322, n323, n325, n326, n327, n328, n330,
+         n332, n333, n334, n335, n336, n337, n338, n339, n340, n341, n342,
+         n345, n346, n347, n348, n349, n350, n351, n353, n354, n355, n356,
+         n357, n358, n359, n360, n361, n364, n365, n366, n367, n368, n369,
+         n370, n371, n372, n374, n375, n376, n377, n378, n379, n380, n382,
+         n383, n384, n385, n386, n387, n388, n389, n390, n391, n392, n393,
+         n395, n396, n397, n398, n399, n400, n401, n402, n403, n404, n405,
+         n406, n407, n408, n409, n410, n411, n412, n413, n414, n415, n416,
+         n417, n418, n419, n420, n421, n422, n423, n424, n425, n426, n427,
+         n428, n431, n432, n433, n434, n435, n438, n440, n441, n442, n443,
+         n444, n445, n446, n447, n448, n449, n450, n451, n453, n454, n455,
+         n456, n457, n458, n459, n460, n465, n466, n467, n468, n469, n470,
+         n473, n474, n475, n480, n481, n482, n483, n484, n485, n486, n487,
+         n488, n489, n490, n491, n492, n493, n494, n495, n496, n497, n498,
+         n499, n500, n501, n502, n503, n504, n505, n506, n507, n508, n509,
+         n510, n513, n514, n515, n516, n517, n518, n519, n520, n521, n522,
+         n523, n524, n525, n526, n527, n528, n529, n530, n531, n532, n535,
+         n536, n541, n542, n543, n544, n545, n546, n547, n548, n549, n550,
+         n551, n552, n553, n554, n555, n556, n557, n558, n559, n560, n561,
+         n562, n563, n564, n565, n566, n567, n568, n569, n570, n571, n572,
+         n573, n574, n575, n576, n577, n578, n579, n580, n581, n587, n588,
+         n589, n590, n593, n595, n597, n605, n606, n608, n609, n610, n611,
+         n622, n623, n625, n626, n627, n629, n630, n631, n632, n633, n637,
+         n638, n639, n640, n641, n642, n643, n644, n645, n646, n647, n648,
+         n649, n650, n651, n652, n654, n655, n656, n657, n658, n659, n660,
+         n661, n662, n664, n665, n666, n667, n668, n669, n683, n684, n685,
+         n686, n687, n688, n689, n690, n691, n692, n693, n694, n695, n696,
+         n697, net38594, net38590, net38608, net38596, net38610, net38609,
+         net38628, net38622, net38621, net38620, net38619, net38618, net38617,
+         net38616, net38615, net38614, net38650, net38649, net38655, net38654,
+         net38660, net38659, net38665, net38664, net38706, net38717, net38721,
+         net38734, net38735, net38737, net38738, net38754, net38756, net38760,
+         net38759, net38758, net38772, net38784, net39232, net39292, net39294,
+         net39303, net39302, net39322, net39332, net39339, net39351, net39349,
+         net39413, net39453, net39480, net39497, net39492, net39502, net39540,
+         net39552, net39551, net39560, net39604, net39616, net39615, net39661,
+         net39660, net39682, net39733, net39731, net39730, net39729, net39728,
+         net39742, net39741, net39752, net39751, net39781, net39784, net39788,
+         net39786, net39791, net39802, net39813, net39860, net39896, net39901,
+         net39905, net39915, net39916, net39945, net39944, net40550, net40564,
+         net40570, net40593, net40638, n826, net39746, net39681, n43, n40, n38,
+         n37, n262, n260, n251, n248, n247, n245, n244, n243, n242, n234, n16,
+         n11, \segwayMath_int/sub_51/carry[9] ,
+         \segwayMath_int/sub_51/carry[8] , \segwayMath_int/sub_51/carry[12] ,
+         \segwayMath_int/sub_51/carry[11] , \segwayMath_int/sub_51/carry[10] ,
+         \segwayMath_int/rght_steer_cntrl[9] ,
+         \segwayMath_int/rght_steer_cntrl[12] ,
+         \segwayMath_int/rght_steer_cntrl[11] ,
+         \segwayMath_int/rght_steer_cntrl[10] ,
+         \segwayMath_int/add_83/carry[9] , \segwayMath_int/add_83/carry[8] ,
+         \segwayMath_int/add_83/carry[7] , \segwayMath_int/add_83/carry[6] ,
+         \segwayMath_int/add_83/carry[5] , \segwayMath_int/add_83/carry[4] ,
+         \segwayMath_int/add_83/carry[3] , \segwayMath_int/add_83/carry[2] ,
+         \segwayMath_int/add_83/carry[12] , \segwayMath_int/add_83/carry[11] ,
+         \segwayMath_int/add_83/carry[10] , \segwayMath_int/N75 , n825, n828,
+         net39745, net39359, net39358, net39357, n54, n50, n291, n290, n282,
+         n281, n280, n279, n278, n277, n276, n269, n266, n265, n263, n164,
+         n163, n162, n161, n158, n157, n155, n154, n153, n152, n12,
+         \segwayMath_int/sub_51/carry[7] , \segwayMath_int/sub_51/carry[6] ,
+         \segwayMath_int/sub_51/carry[5] , \segwayMath_int/sub_51/carry[4] ,
+         \segwayMath_int/sub_51/carry[3] , \segwayMath_int/sub_51/carry[2] ,
+         \segwayMath_int/rght_steer_cntrl[6] ,
+         \segwayMath_int/rght_steer_cntrl[5] ,
+         \segwayMath_int/rght_steer_cntrl[4] ,
+         \segwayMath_int/rght_steer_cntrl[2] ,
+         \segwayMath_int/rght_steer_cntrl[1] ,
+         \segwayMath_int/mult_35/SUMB[6][2] ,
+         \segwayMath_int/mult_35/SUMB[5][3] ,
+         \segwayMath_int/mult_35/CARRYB[7][1] ,
+         \segwayMath_int/mult_35/CARRYB[6][2] ,
+         \segwayMath_int/lft_steer_cntrl[1] , \segwayMath_int/add_43/carry[6] ,
+         \segwayMath_int/add_43/carry[5] , \segwayMath_int/add_43/carry[2] ,
+         net39526, n89, n77, n76, n59, n512, n511, n479, n478, n477, n472,
+         n471, n464, n463, n462, n461, n452, n439, n437, n436, n430, n363,
+         n362, n352, n189, n188, n187, n179, n127, n126, n125, n124, n123,
+         n122, n99, n616, n615, n614, n613, n612, n607, n604, n603, n602, n601,
+         n600, n599, n540, n539, n537, n534, n180,
+         \PID_int/add_1_root_add_0_root_add_138_2/carry[15] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[14] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[13] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[12] ,
+         \PID_int/add_0_root_add_0_root_add_138_2/carry[11] ,
+         \PID_int/P_term[12] , \PID_int/P_term[11] , \PID_int/P_term[10] ,
+         \PID_int/PID_inter[13] , \PID_int/PID_inter[12] ,
+         \PID_int/PID_inter[11] , \PID_int/N35 , \PID_int/N34 , \PID_int/N33 ,
+         n635, n634, n628, n624, n621, n620, n619, n618, n617, n596, n594,
+         n592, n591, n586, n585, n584, n583, n582, n698, n699, n700, n701,
+         n702, n703, n704, n705, n706, n707, n708, n709, n710, n711, n712,
+         n713, n714, n715, n716, n717, n718, n719, n720, n721, n722, n723,
+         n724, n725, n726, n727, n728, n729, n730, n731, n732, n733, n734,
+         n735, n736, n737, n738, n739, n740, n746, n748, n750, n752, n753,
+         n754, n755, n756, n757, n758, n759, n760, n761, n762, n763, n764,
+         n765, n766, n767, n768, n769, n770, n771, n772, n773, n774, n775,
+         n776, n777, n778, n779, n780, n781, n782, n783, n784, n785, n786,
+         n787, n788, n790, n791, n792, n793, n794, n795, n796, n797, n798,
+         n799, n800, n801, n802, n806, n807, n808, n810, n811, n812, n813,
+         n815, n817;
+  wire   [17:0] \PID_int/ride_off_cond_integrator ;
+  wire   [17:0] \PID_int/vld_integrator ;
+  wire   [17:0] \PID_int/ptch_err_sat_SEA ;
+  wire   [15:0] \PID_int/PID_inter ;
+  wire   [14:0] \PID_int/P_term ;
+  wire   [9:0] \PID_int/ptch_err_sat ;
+  wire   [17:0] \PID_int/integrator ;
+  wire   [17:1] \PID_int/add_148/carry ;
+  wire   [12:0] \segwayMath_int/rght_steer_cntrl ;
+  wire   [12:0] \segwayMath_int/lft_steer_cntrl ;
+  wire   [19:8] \segwayMath_int/PID_SS_inter ;
+  wire   [12:2] \segwayMath_int/add_67/carry ;
+  assign ss_tmr[0] = net38609;
+  assign ss_tmr[1] = net38617;
+  assign ss_tmr[3] = net38649;
+  assign ss_tmr[4] = net38654;
+  assign ss_tmr[5] = net38659;
+  assign ss_tmr[6] = net38664;
+  assign rght_spd[6] = net38754;
+  assign lft_spd[7] = net38756;
+  assign rght_spd[8] = net38772;
+  assign rght_spd[7] = net38784;
+  assign rght_spd[10] = net39332;
+  assign lft_spd[8] = net39339;
+  assign rght_spd[4] = net39480;
+  assign rght_spd[3] = net39540;
+  assign rght_spd[9] = net39682;
+  assign lft_spd[10] = net39752;
+  assign rght_spd[11] = net40550;
+  assign too_fast = net40564;
+
+  DFFSSRX1_LVT \PID_int/integrator_reg[8]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [8]), .CLK(clk), .Q(n133) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[9]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [9]), .CLK(clk), .Q(n134) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[10]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [10]), .CLK(clk), .Q(n135) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[11]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [11]), .CLK(clk), .Q(n136) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[12]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [12]), .CLK(clk), .Q(n137) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[13]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [13]), .CLK(clk), .Q(n138) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[0]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [0]), .CLK(clk), .Q(
+        \PID_int/integrator [0]) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[1]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [1]), .CLK(clk), .Q(n139) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[2]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [2]), .CLK(clk), .Q(n140) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[3]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [3]), .CLK(clk), .Q(n141) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[4]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [4]), .CLK(clk), .Q(n142) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[5]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [5]), .CLK(clk), .Q(n143) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[6]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [6]), .CLK(clk), .Q(n144) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[7]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [7]), .CLK(clk), .Q(n145) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[0]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [0]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [0]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[1]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [1]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [1]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[2]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [2]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [2]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[3]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [3]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [3]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[4]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [4]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [4]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[5]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [5]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [5]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[6]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [6]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [6]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[7]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [7]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [7]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[8]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [8]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [8]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[9]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [9]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [9]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[10]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [10]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [10]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[11]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [11]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [11]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[12]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [12]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [12]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[13]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [13]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [13]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[14]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [14]), .CLK(clk), .Q(n808)
+         );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[15]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [15]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [15]) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[16]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [16]), .CLK(clk), .QN(
+        \PID_int/n16 ) );
+  DFFSSRX1_LVT \PID_int/ride_off_cond_integrator_reg[17]  ( .D(1'b0), .SETB(
+        rider_off), .RSTB(\PID_int/vld_integrator [17]), .CLK(clk), .Q(
+        \PID_int/ride_off_cond_integrator [17]) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[8]  ( .D(\PID_int/n57 ), .CLK(clk), 
+        .RSTB(rst_n), .QN(n150) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[9]  ( .D(\PID_int/n58 ), .CLK(clk), 
+        .RSTB(n739), .QN(n686) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[10]  ( .D(\PID_int/n59 ), .CLK(clk), 
+        .RSTB(n740), .QN(n690) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[11]  ( .D(\PID_int/n60 ), .CLK(clk), 
+        .RSTB(rst_n), .QN(n691) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[12]  ( .D(\PID_int/n61 ), .CLK(clk), 
+        .RSTB(n739), .QN(n692) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[13]  ( .D(\PID_int/n62 ), .CLK(clk), 
+        .RSTB(n740), .QN(n693) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[14]  ( .D(\PID_int/n63 ), .CLK(clk), 
+        .RSTB(rst_n), .QN(n694) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[15]  ( .D(\PID_int/n64 ), .CLK(clk), 
+        .RSTB(n739), .QN(n688) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[16]  ( .D(\PID_int/n65 ), .CLK(clk), 
+        .RSTB(n740), .QN(n689) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[17]  ( .D(\PID_int/n66 ), .CLK(clk), 
+        .RSTB(rst_n), .QN(n687) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[18]  ( .D(\PID_int/n67 ), .CLK(clk), 
+        .RSTB(rst_n), .QN(n695) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[20]  ( .D(\PID_int/n69 ), .CLK(clk), 
+        .RSTB(n739), .Q(n840), .QN(net38615) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[0]  ( .D(\PID_int/N43 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [0]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[17]  ( .D(\PID_int/N60 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [17]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[16]  ( .D(\PID_int/N59 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [16]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[15]  ( .D(\PID_int/N58 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [15]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[14]  ( .D(\PID_int/N57 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [14]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[13]  ( .D(\PID_int/N56 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [13]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[12]  ( .D(\PID_int/N55 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [12]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[11]  ( .D(\PID_int/N54 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [11]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[10]  ( .D(\PID_int/N53 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [10]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[9]  ( .D(\PID_int/N52 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [9]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[8]  ( .D(\PID_int/N51 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [8]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[7]  ( .D(\PID_int/N50 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [7]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[6]  ( .D(\PID_int/N49 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [6]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[5]  ( .D(\PID_int/N48 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [5]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[4]  ( .D(\PID_int/N47 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [4]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[3]  ( .D(\PID_int/N46 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [3]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[2]  ( .D(\PID_int/N45 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [2]) );
+  DFFX1_LVT \PID_int/vld_integrator_reg[1]  ( .D(\PID_int/N44 ), .CLK(clk), 
+        .Q(\PID_int/vld_integrator [1]) );
+  FADDX1_LVT \PID_int/add_148/U1_1  ( .A(net38738), .B(n139), .CI(
+        \PID_int/add_148/carry [1]), .CO(\PID_int/add_148/carry [2]), .S(
+        \PID_int/ptch_err_sat_SEA [1]) );
+  FADDX1_LVT \PID_int/add_148/U1_2  ( .A(\PID_int/ptch_err_sat [2]), .B(n140), 
+        .CI(\PID_int/add_148/carry [2]), .CO(\PID_int/add_148/carry [3]), .S(
+        \PID_int/ptch_err_sat_SEA [2]) );
+  FADDX1_LVT \PID_int/add_148/U1_3  ( .A(\PID_int/ptch_err_sat [3]), .B(n141), 
+        .CI(\PID_int/add_148/carry [3]), .CO(\PID_int/add_148/carry [4]), .S(
+        \PID_int/ptch_err_sat_SEA [3]) );
+  FADDX1_LVT \PID_int/add_148/U1_4  ( .A(\PID_int/ptch_err_sat [4]), .B(n142), 
+        .CI(\PID_int/add_148/carry [4]), .CO(\PID_int/add_148/carry [5]), .S(
+        \PID_int/ptch_err_sat_SEA [4]) );
+  FADDX1_LVT \PID_int/add_148/U1_5  ( .A(\PID_int/ptch_err_sat [5]), .B(n143), 
+        .CI(\PID_int/add_148/carry [5]), .CO(\PID_int/add_148/carry [6]), .S(
+        \PID_int/ptch_err_sat_SEA [5]) );
+  FADDX1_LVT \PID_int/add_148/U1_6  ( .A(\PID_int/ptch_err_sat [6]), .B(n144), 
+        .CI(\PID_int/add_148/carry [6]), .CO(\PID_int/add_148/carry [7]), .S(
+        \PID_int/ptch_err_sat_SEA [6]) );
+  FADDX1_LVT \PID_int/add_148/U1_7  ( .A(\PID_int/ptch_err_sat [7]), .B(n145), 
+        .CI(\PID_int/add_148/carry [7]), .CO(\PID_int/add_148/carry [8]), .S(
+        \PID_int/ptch_err_sat_SEA [7]) );
+  FADDX1_LVT \PID_int/add_148/U1_8  ( .A(\PID_int/ptch_err_sat [8]), .B(n133), 
+        .CI(\PID_int/add_148/carry [8]), .CO(\PID_int/add_148/carry [9]), .S(
+        \PID_int/ptch_err_sat_SEA [8]) );
+  FADDX1_LVT \PID_int/add_148/U1_9  ( .A(n98), .B(n134), .CI(
+        \PID_int/add_148/carry [9]), .CO(\PID_int/add_148/carry [10]), .S(
+        \PID_int/ptch_err_sat_SEA [9]) );
+  FADDX1_LVT \PID_int/add_148/U1_10  ( .A(n98), .B(n135), .CI(
+        \PID_int/add_148/carry [10]), .CO(\PID_int/add_148/carry [11]), .S(
+        \PID_int/ptch_err_sat_SEA [10]) );
+  FADDX1_LVT \PID_int/add_148/U1_11  ( .A(n98), .B(n136), .CI(
+        \PID_int/add_148/carry [11]), .CO(\PID_int/add_148/carry [12]), .S(
+        \PID_int/ptch_err_sat_SEA [11]) );
+  FADDX1_LVT \PID_int/add_148/U1_12  ( .A(n98), .B(n137), .CI(
+        \PID_int/add_148/carry [12]), .CO(\PID_int/add_148/carry [13]), .S(
+        \PID_int/ptch_err_sat_SEA [12]) );
+  FADDX1_LVT \PID_int/add_148/U1_13  ( .A(n98), .B(n138), .CI(
+        \PID_int/add_148/carry [13]), .CO(\PID_int/add_148/carry [14]), .S(
+        \PID_int/ptch_err_sat_SEA [13]) );
+  FADDX1_LVT \PID_int/add_148/U1_14  ( .A(n98), .B(n146), .CI(
+        \PID_int/add_148/carry [14]), .CO(\PID_int/add_148/carry [15]), .S(
+        \PID_int/ptch_err_sat_SEA [14]) );
+  FADDX1_LVT \PID_int/add_148/U1_16  ( .A(n98), .B(n147), .CI(
+        \PID_int/add_148/carry [16]), .CO(\PID_int/add_148/carry [17]), .S(
+        \PID_int/ptch_err_sat_SEA [16]) );
+  FADDX1_LVT \PID_int/add_148/U1_17  ( .A(n98), .B(\PID_int/integrator [17]), 
+        .CI(\PID_int/add_148/carry [17]), .S(\PID_int/ptch_err_sat_SEA [17])
+         );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_4  ( .A(\PID_int/N26 ), .B(\PID_int/P_term [4]), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[4] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[5] ), .S(
+        \PID_int/PID_inter [4]) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_3  ( .A(\PID_int/N25 ), .B(\PID_int/P_term [3]), .CI(n696), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[4] ), .S(
+        \PID_int/PID_inter [3]) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_5  ( .A(\PID_int/N27 ), .B(\PID_int/P_term [5]), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[5] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[6] ), .S(
+        \PID_int/PID_inter [5]) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_8  ( .A(\PID_int/N30 ), .B(\PID_int/P_term [8]), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[8] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[9] ), .S(
+        \PID_int/PID_inter [8]) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_7  ( .A(
+        \segwayMath_int/steer_pot_inter[10] ), .B(n121), .CI(
+        \segwayMath_int/add_43/carry[7] ), .CO(
+        \segwayMath_int/steer_control_div[8] ), .S(
+        \segwayMath_int/steer_control_div[7] ) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_3  ( .A(
+        \segwayMath_int/steer_pot_inter[6] ), .B(
+        \segwayMath_int/steer_pot_inter[7] ), .CI(
+        \segwayMath_int/add_43/carry[3] ), .CO(
+        \segwayMath_int/add_43/carry[4] ), .S(
+        \segwayMath_int/steer_control_div[3] ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_1  ( .A0(n58), .B0(n62), .C1(
+        \segwayMath_int/add_67/carry [2]), .SO(\segwayMath_int/N35 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_2  ( .A0(n55), .B0(
+        \segwayMath_int/add_67/carry [2]), .C1(
+        \segwayMath_int/add_67/carry [3]), .SO(\segwayMath_int/N36 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_3  ( .A0(n51), .B0(
+        \segwayMath_int/add_67/carry [3]), .C1(
+        \segwayMath_int/add_67/carry [4]), .SO(\segwayMath_int/N37 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_4  ( .A0(n44), .B0(
+        \segwayMath_int/add_67/carry [4]), .C1(
+        \segwayMath_int/add_67/carry [5]), .SO(\segwayMath_int/N38 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_5  ( .A0(n41), .B0(
+        \segwayMath_int/add_67/carry [5]), .C1(
+        \segwayMath_int/add_67/carry [6]), .SO(\segwayMath_int/N39 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_6  ( .A0(n39), .B0(
+        \segwayMath_int/add_67/carry [6]), .C1(
+        \segwayMath_int/add_67/carry [7]), .SO(\segwayMath_int/N40 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_7  ( .A0(n25), .B0(
+        \segwayMath_int/add_67/carry [7]), .C1(
+        \segwayMath_int/add_67/carry [8]), .SO(\segwayMath_int/N41 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_8  ( .A0(n32), .B0(
+        \segwayMath_int/add_67/carry [8]), .C1(
+        \segwayMath_int/add_67/carry [9]), .SO(\segwayMath_int/N42 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_9  ( .A0(n31), .B0(
+        \segwayMath_int/add_67/carry [9]), .C1(
+        \segwayMath_int/add_67/carry [10]), .SO(\segwayMath_int/N43 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_10  ( .A0(n30), .B0(
+        \segwayMath_int/add_67/carry [10]), .C1(
+        \segwayMath_int/add_67/carry [11]), .SO(\segwayMath_int/N44 ) );
+  HADDX1_LVT \segwayMath_int/add_67/U1_1_11  ( .A0(n29), .B0(
+        \segwayMath_int/add_67/carry [11]), .C1(
+        \segwayMath_int/add_67/carry [12]), .SO(\segwayMath_int/N45 ) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_4  ( .A(
+        \segwayMath_int/PID_SS_inter [12]), .B(
+        \segwayMath_int/steer_control_div[4] ), .CI(
+        \segwayMath_int/add_49/carry[4] ), .CO(
+        \segwayMath_int/add_49/carry[5] ), .S(
+        \segwayMath_int/lft_steer_cntrl [4]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_3  ( .A(
+        \segwayMath_int/steer_control_div[3] ), .B(
+        \segwayMath_int/PID_SS_inter [11]), .CI(
+        \segwayMath_int/add_49/carry[3] ), .CO(
+        \segwayMath_int/add_49/carry[4] ), .S(
+        \segwayMath_int/lft_steer_cntrl [3]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_2  ( .A(
+        \segwayMath_int/PID_SS_inter [10]), .B(
+        \segwayMath_int/steer_control_div[2] ), .CI(
+        \segwayMath_int/add_49/carry[2] ), .CO(
+        \segwayMath_int/add_49/carry[3] ), .S(
+        \segwayMath_int/lft_steer_cntrl [2]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_7  ( .A(
+        \segwayMath_int/PID_SS_inter [15]), .B(
+        \segwayMath_int/steer_control_div[7] ), .CI(
+        \segwayMath_int/add_49/carry[7] ), .CO(
+        \segwayMath_int/add_49/carry[8] ), .S(
+        \segwayMath_int/lft_steer_cntrl [7]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_9  ( .A(
+        \segwayMath_int/PID_SS_inter [17]), .B(n121), .CI(
+        \segwayMath_int/add_49/carry[9] ), .CO(
+        \segwayMath_int/add_49/carry[10] ), .S(
+        \segwayMath_int/lft_steer_cntrl [9]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_8  ( .A(
+        \segwayMath_int/PID_SS_inter [16]), .B(
+        \segwayMath_int/steer_control_div[8] ), .CI(
+        \segwayMath_int/add_49/carry[8] ), .CO(
+        \segwayMath_int/add_49/carry[9] ), .S(
+        \segwayMath_int/lft_steer_cntrl [8]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_10  ( .A(
+        \segwayMath_int/PID_SS_inter [18]), .B(n121), .CI(
+        \segwayMath_int/add_49/carry[10] ), .CO(
+        \segwayMath_int/add_49/carry[11] ), .S(
+        \segwayMath_int/lft_steer_cntrl [10]) );
+  FADDX1_LVT \segwayMath_int/add_49/U1_11  ( .A(
+        \segwayMath_int/PID_SS_inter [19]), .B(n121), .CI(
+        \segwayMath_int/add_49/carry[11] ), .CO(
+        \segwayMath_int/add_49/carry[12] ), .S(
+        \segwayMath_int/lft_steer_cntrl [11]) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_5  ( .A(
+        \segwayMath_int/mult_35/ab[7][5] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][5] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][6] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][5] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][5] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_5_2  ( .A(
+        \segwayMath_int/mult_35/ab[5][2] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][2] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][3] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][2] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][2] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_4_2  ( .A(
+        \segwayMath_int/mult_35/ab[4][2] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][2] ), .CI(
+        \segwayMath_int/mult_35/SUMB[3][3] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][2] ), .S(
+        \segwayMath_int/mult_35/SUMB[4][2] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_2_3  ( .A(
+        \segwayMath_int/mult_35/ab[2][3] ), .B(
+        \segwayMath_int/mult_35/CARRYB[1][3] ), .CI(
+        \segwayMath_int/mult_35/SUMB[1][4] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][3] ), .S(
+        \segwayMath_int/mult_35/SUMB[2][3] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_3_2  ( .A(
+        \segwayMath_int/mult_35/ab[3][2] ), .B(
+        \segwayMath_int/mult_35/CARRYB[2][2] ), .CI(
+        \segwayMath_int/mult_35/SUMB[2][3] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[3][2] ), .S(
+        \segwayMath_int/mult_35/SUMB[3][2] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_6  ( .A(
+        \segwayMath_int/mult_35/ab[6][6] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][6] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][7] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][6] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][6] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_5_7  ( .A(
+        \segwayMath_int/mult_35/ab[5][7] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][7] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][8] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][7] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][7] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_4_8  ( .A(
+        \segwayMath_int/mult_35/ab[4][8] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][8] ), .CI(
+        \segwayMath_int/mult_35/SUMB[3][9] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][8] ), .S(
+        \segwayMath_int/mult_35/SUMB[4][8] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_2_9  ( .A(
+        \segwayMath_int/mult_35/ab[2][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[1][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[1][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[2][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_3_9  ( .A(
+        \segwayMath_int/mult_35/ab[3][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[2][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[2][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[3][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[3][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_2_10  ( .A(
+        \segwayMath_int/mult_35/ab[2][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[1][10] ), .CI(
+        \segwayMath_int/mult_35/ab[1][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[2][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_2_2  ( .A(
+        \segwayMath_int/mult_35/ab[2][2] ), .B(
+        \segwayMath_int/mult_35/CARRYB[1][2] ), .CI(
+        \segwayMath_int/mult_35/SUMB[1][3] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][2] ), .S(
+        \segwayMath_int/mult_35/SUMB[2][2] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_2_1  ( .A(
+        \segwayMath_int/mult_35/ab[2][1] ), .B(
+        \segwayMath_int/mult_35/SUMB[1][2] ), .CI(
+        \segwayMath_int/mult_35/CARRYB[1][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[2][1] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_2_0  ( .A(
+        \segwayMath_int/mult_35/ab[2][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[1][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[1][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[2][0] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_3_10  ( .A(
+        \segwayMath_int/mult_35/ab[3][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[2][10] ), .CI(
+        \segwayMath_int/mult_35/ab[2][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[3][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[3][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_3_1  ( .A(
+        \segwayMath_int/mult_35/ab[3][1] ), .B(
+        \segwayMath_int/mult_35/CARRYB[2][1] ), .CI(
+        \segwayMath_int/mult_35/SUMB[2][2] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[3][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[3][1] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_3_0  ( .A(
+        \segwayMath_int/mult_35/ab[3][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[2][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[2][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[3][0] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_4_10  ( .A(
+        \segwayMath_int/mult_35/ab[4][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][10] ), .CI(
+        \segwayMath_int/mult_35/ab[3][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[4][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_4_9  ( .A(
+        \segwayMath_int/mult_35/ab[4][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[3][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[4][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_4_1  ( .A(
+        \segwayMath_int/mult_35/ab[4][1] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][1] ), .CI(
+        \segwayMath_int/mult_35/SUMB[3][2] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[4][1] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_4_0  ( .A(
+        \segwayMath_int/mult_35/ab[4][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[3][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[3][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[4][0] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_5_10  ( .A(
+        \segwayMath_int/mult_35/ab[5][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][10] ), .CI(
+        \segwayMath_int/mult_35/ab[4][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_5_9  ( .A(
+        \segwayMath_int/mult_35/ab[5][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_5_8  ( .A(
+        \segwayMath_int/mult_35/ab[5][8] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][8] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][9] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][8] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][8] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_5_1  ( .A(
+        \segwayMath_int/mult_35/ab[5][1] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][1] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][2] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[5][1] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_5_0  ( .A(
+        \segwayMath_int/mult_35/ab[5][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[4][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[4][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[5][0] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_6_10  ( .A(
+        \segwayMath_int/mult_35/ab[6][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][10] ), .CI(
+        \segwayMath_int/mult_35/ab[5][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_9  ( .A(
+        \segwayMath_int/mult_35/ab[6][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_8  ( .A(
+        \segwayMath_int/mult_35/ab[6][8] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][8] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][9] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][8] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][8] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_7  ( .A(
+        \segwayMath_int/mult_35/ab[6][7] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][7] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][8] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][7] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][7] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_1  ( .A(
+        \segwayMath_int/mult_35/ab[6][1] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][1] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][2] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][1] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_6_0  ( .A(
+        \segwayMath_int/mult_35/ab[6][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][0] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S3_7_10  ( .A(
+        \segwayMath_int/mult_35/ab[7][10] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][10] ), .CI(
+        \segwayMath_int/mult_35/ab[6][11] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][10] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][10] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_9  ( .A(
+        \segwayMath_int/mult_35/ab[7][9] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][9] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][10] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][9] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][9] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_8  ( .A(
+        \segwayMath_int/mult_35/ab[7][8] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][8] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][9] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][8] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][8] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_7  ( .A(
+        \segwayMath_int/mult_35/ab[7][7] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][7] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][8] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][7] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][7] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_6  ( .A(
+        \segwayMath_int/mult_35/ab[7][6] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][6] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][7] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][6] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][6] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S1_7_0  ( .A(
+        \segwayMath_int/mult_35/ab[7][0] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][0] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][1] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][0] ) );
+  NOR4X1_LVT U24 ( .A1(\segwayMath_int/N72 ), .A2(\segwayMath_int/N71 ), .A3(
+        \segwayMath_int/N70 ), .A4(net38734), .Y(n288) );
+  XOR2X2_LVT U36 ( .A1(\segwayMath_int/mult_35/CARRYB[7][0] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][1] ), .Y(n228) );
+  NOR4X1_LVT U40 ( .A1(n372), .A2(n314), .A3(n321), .A4(n339), .Y(n340) );
+  XNOR3X2_LVT U62 ( .A1(n446), .A2(n53), .A3(n67), .Y(n426) );
+  XNOR3X2_LVT U73 ( .A1(n488), .A2(n72), .A3(n82), .Y(n466) );
+  XNOR3X2_LVT U74 ( .A1(n489), .A2(n70), .A3(n490), .Y(n450) );
+  XNOR3X2_LVT U75 ( .A1(n206), .A2(n207), .A3(n205), .Y(n491) );
+  XNOR3X2_LVT U77 ( .A1(n215), .A2(n214), .A3(n213), .Y(n209) );
+  XNOR3X2_LVT U78 ( .A1(n219), .A2(\segwayMath_int/mult_35/SUMB[2][9] ), .A3(
+        n217), .Y(n213) );
+  XNOR3X2_LVT U79 ( .A1(n508), .A2(n509), .A3(n510), .Y(n484) );
+  XNOR3X2_LVT U81 ( .A1(n515), .A2(n516), .A3(n517), .Y(n513) );
+  XNOR3X2_LVT U82 ( .A1(n494), .A2(n495), .A3(n493), .Y(n490) );
+  XOR2X2_LVT U86 ( .A1(n528), .A2(n527), .Y(n510) );
+  XOR3X2_LVT U88 ( .A1(n521), .A2(n523), .A3(n522), .Y(n517) );
+  XNOR2X2_LVT U89 ( .A1(n532), .A2(n520), .Y(n522) );
+  XOR3X2_LVT U118 ( .A1(\PID_int/ptch_err_sat [2]), .A2(
+        \PID_int/ptch_err_sat [3]), .A3(net39616), .Y(\PID_int/P_term [5]) );
+  NAND2X0_LVT U290 ( .A1(steer_pot[8]), .A2(n169), .Y(n168) );
+  NAND2X0_LVT U291 ( .A1(steer_pot[7]), .A2(n169), .Y(n171) );
+  NAND2X0_LVT U292 ( .A1(steer_pot[6]), .A2(n169), .Y(n173) );
+  NAND2X0_LVT U293 ( .A1(steer_pot[5]), .A2(n169), .Y(n175) );
+  AND2X1_LVT U294 ( .A1(n815), .A2(n177), .Y(\segwayMath_int/mult_35/ab[7][9] ) );
+  AND2X1_LVT U295 ( .A1(n815), .A2(n178), .Y(\segwayMath_int/mult_35/ab[7][8] ) );
+  AND2X1_LVT U296 ( .A1(n815), .A2(net39915), .Y(
+        \segwayMath_int/mult_35/ab[7][7] ) );
+  AND2X1_LVT U297 ( .A1(n815), .A2(n772), .Y(\segwayMath_int/mult_35/ab[7][6] ) );
+  AND2X1_LVT U298 ( .A1(n815), .A2(n181), .Y(\segwayMath_int/mult_35/ab[7][5] ) );
+  AND2X1_LVT U299 ( .A1(n815), .A2(n182), .Y(\segwayMath_int/mult_35/ab[7][1] ) );
+  AND2X1_LVT U300 ( .A1(n815), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[7][10] ) );
+  AND2X1_LVT U301 ( .A1(n815), .A2(n184), .Y(\segwayMath_int/mult_35/ab[7][0] ) );
+  AND2X1_LVT U302 ( .A1(net38665), .A2(n177), .Y(
+        \segwayMath_int/mult_35/ab[6][9] ) );
+  AND2X1_LVT U303 ( .A1(net38665), .A2(n178), .Y(
+        \segwayMath_int/mult_35/ab[6][8] ) );
+  AND2X1_LVT U304 ( .A1(net38665), .A2(net39915), .Y(
+        \segwayMath_int/mult_35/ab[6][7] ) );
+  AND2X1_LVT U305 ( .A1(net38665), .A2(n772), .Y(
+        \segwayMath_int/mult_35/ab[6][6] ) );
+  AND2X1_LVT U306 ( .A1(net38665), .A2(n185), .Y(
+        \segwayMath_int/mult_35/ab[6][2] ) );
+  AND2X1_LVT U307 ( .A1(net38665), .A2(n182), .Y(
+        \segwayMath_int/mult_35/ab[6][1] ) );
+  NOR2X0_LVT U308 ( .A1(n97), .A2(net38665), .Y(
+        \segwayMath_int/mult_35/ab[6][11] ) );
+  AND2X1_LVT U309 ( .A1(net38665), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[6][10] ) );
+  AND2X1_LVT U310 ( .A1(net38665), .A2(n184), .Y(
+        \segwayMath_int/mult_35/ab[6][0] ) );
+  AND2X1_LVT U311 ( .A1(net38660), .A2(n177), .Y(
+        \segwayMath_int/mult_35/ab[5][9] ) );
+  AND2X1_LVT U312 ( .A1(net38660), .A2(n178), .Y(
+        \segwayMath_int/mult_35/ab[5][8] ) );
+  AND2X1_LVT U313 ( .A1(net38660), .A2(net39915), .Y(
+        \segwayMath_int/mult_35/ab[5][7] ) );
+  AND2X1_LVT U314 ( .A1(net38660), .A2(n185), .Y(
+        \segwayMath_int/mult_35/ab[5][2] ) );
+  AND2X1_LVT U315 ( .A1(net38660), .A2(n182), .Y(
+        \segwayMath_int/mult_35/ab[5][1] ) );
+  NOR2X0_LVT U316 ( .A1(n97), .A2(net38660), .Y(
+        \segwayMath_int/mult_35/ab[5][11] ) );
+  AND2X1_LVT U317 ( .A1(net38660), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[5][10] ) );
+  AND2X1_LVT U318 ( .A1(net38660), .A2(n184), .Y(
+        \segwayMath_int/mult_35/ab[5][0] ) );
+  AND2X1_LVT U319 ( .A1(net38655), .A2(n177), .Y(
+        \segwayMath_int/mult_35/ab[4][9] ) );
+  AND2X1_LVT U320 ( .A1(net38655), .A2(n178), .Y(
+        \segwayMath_int/mult_35/ab[4][8] ) );
+  AND2X1_LVT U321 ( .A1(net38655), .A2(n185), .Y(
+        \segwayMath_int/mult_35/ab[4][2] ) );
+  AND2X1_LVT U322 ( .A1(net38655), .A2(n182), .Y(
+        \segwayMath_int/mult_35/ab[4][1] ) );
+  AND2X1_LVT U324 ( .A1(net38655), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[4][10] ) );
+  AND2X1_LVT U325 ( .A1(net38655), .A2(n184), .Y(
+        \segwayMath_int/mult_35/ab[4][0] ) );
+  AND2X1_LVT U326 ( .A1(net38650), .A2(n177), .Y(
+        \segwayMath_int/mult_35/ab[3][9] ) );
+  AND2X1_LVT U327 ( .A1(net38650), .A2(n185), .Y(
+        \segwayMath_int/mult_35/ab[3][2] ) );
+  AND2X1_LVT U328 ( .A1(net38650), .A2(n182), .Y(
+        \segwayMath_int/mult_35/ab[3][1] ) );
+  AND2X1_LVT U330 ( .A1(net38650), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[3][10] ) );
+  AND2X1_LVT U331 ( .A1(net38650), .A2(n184), .Y(
+        \segwayMath_int/mult_35/ab[3][0] ) );
+  AND2X1_LVT U332 ( .A1(n817), .A2(n177), .Y(\segwayMath_int/mult_35/ab[2][9] ) );
+  AND2X1_LVT U333 ( .A1(n817), .A2(n186), .Y(\segwayMath_int/mult_35/ab[2][3] ) );
+  AND2X1_LVT U334 ( .A1(n817), .A2(n185), .Y(\segwayMath_int/mult_35/ab[2][2] ) );
+  AND2X1_LVT U335 ( .A1(n817), .A2(n182), .Y(\segwayMath_int/mult_35/ab[2][1] ) );
+  AND2X1_LVT U337 ( .A1(n817), .A2(n183), .Y(
+        \segwayMath_int/mult_35/ab[2][10] ) );
+  AND2X1_LVT U338 ( .A1(n817), .A2(n184), .Y(\segwayMath_int/mult_35/ab[2][0] ) );
+  NOR2X0_LVT U339 ( .A1(n97), .A2(net38620), .Y(
+        \segwayMath_int/mult_35/ab[1][11] ) );
+  NAND2X0_LVT U340 ( .A1(net38628), .A2(n196), .Y(n195) );
+  NAND2X0_LVT U341 ( .A1(net38619), .A2(n186), .Y(n198) );
+  NAND2X0_LVT U342 ( .A1(net38610), .A2(n186), .Y(n200) );
+  NAND2X0_LVT U343 ( .A1(net38610), .A2(n185), .Y(n202) );
+  NAND2X0_LVT U344 ( .A1(net38618), .A2(n183), .Y(n204) );
+  AO22X1_LVT U345 ( .A1(n205), .A2(n206), .A3(n207), .A4(n208), .Y(
+        \segwayMath_int/mult_35/CARRYB[6][5] ) );
+  OR2X1_LVT U346 ( .A1(n206), .A2(n205), .Y(n208) );
+  OAI22X1_LVT U347 ( .A1(n209), .A2(n210), .A3(n211), .A4(n212), .Y(
+        \segwayMath_int/mult_35/CARRYB[5][6] ) );
+  AND2X1_LVT U348 ( .A1(n209), .A2(n210), .Y(n212) );
+  AO22X1_LVT U349 ( .A1(n213), .A2(n214), .A3(n215), .A4(n216), .Y(
+        \segwayMath_int/mult_35/CARRYB[4][7] ) );
+  OR2X1_LVT U350 ( .A1(n214), .A2(n213), .Y(n216) );
+  AO22X1_LVT U351 ( .A1(n93), .A2(n217), .A3(
+        \segwayMath_int/mult_35/SUMB[2][9] ), .A4(n218), .Y(
+        \segwayMath_int/mult_35/CARRYB[3][8] ) );
+  OR2X1_LVT U352 ( .A1(n217), .A2(n93), .Y(n218) );
+  AND3X1_LVT U353 ( .A1(net38628), .A2(n177), .A3(n220), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][9] ) );
+  AND3X1_LVT U354 ( .A1(net38628), .A2(n186), .A3(n197), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][3] ) );
+  AND2X1_LVT U355 ( .A1(net38610), .A2(n196), .Y(n197) );
+  AND3X1_LVT U356 ( .A1(net38610), .A2(n186), .A3(n199), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][2] ) );
+  AND2X1_LVT U357 ( .A1(net38628), .A2(n185), .Y(n199) );
+  AND3X1_LVT U358 ( .A1(net38610), .A2(n185), .A3(n201), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][1] ) );
+  AND3X1_LVT U359 ( .A1(net38622), .A2(n183), .A3(n203), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][10] ) );
+  NOR2X0_LVT U360 ( .A1(n97), .A2(net38610), .Y(n203) );
+  AND3X1_LVT U361 ( .A1(net38610), .A2(n184), .A3(n201), .Y(
+        \segwayMath_int/mult_35/CARRYB[1][0] ) );
+  AND2X1_LVT U362 ( .A1(net38622), .A2(n182), .Y(n201) );
+  AND2X1_LVT U365 ( .A1(n228), .A2(n128), .Y(\segwayMath_int/add_49/carry[1] )
+         );
+  AND2X1_LVT U366 ( .A1(n230), .A2(\segwayMath_int/steer_pot_inter[4] ), .Y(
+        \segwayMath_int/add_43/carry[1] ) );
+  NAND2X0_LVT U369 ( .A1(n238), .A2(n239), .Y(n233) );
+  NAND3X0_LVT U388 ( .A1(n17), .A2(n239), .A3(n10), .Y(n264) );
+  AO22X1_LVT U397 ( .A1(n271), .A2(net38734), .A3(n272), .A4(n268), .Y(n270)
+         );
+  NAND4X0_LVT U403 ( .A1(\segwayMath_int/N69 ), .A2(\segwayMath_int/N68 ), 
+        .A3(\segwayMath_int/N67 ), .A4(\segwayMath_int/N66 ), .Y(n285) );
+  OR3X1_LVT U408 ( .A1(\segwayMath_int/N74 ), .A2(\segwayMath_int/N73 ), .A3(
+        net38734), .Y(n286) );
+  NAND2X0_LVT U413 ( .A1(n18), .A2(n246), .Y(n240) );
+  NAND2X0_LVT U418 ( .A1(n15), .A2(n36), .Y(n236) );
+  AO22X1_LVT U425 ( .A1(\segwayMath_int/rght_steer_cntrl [7]), .A2(en_steer), 
+        .A3(\segwayMath_int/PID_SS_inter [15]), .A4(net38608), .Y(n252) );
+  AND2X1_LVT U432 ( .A1(n296), .A2(\PID_int/ptch_err_sat [0]), .Y(n696) );
+  OA22X1_LVT U434 ( .A1(n301), .A2(n302), .A3(n41), .A4(n303), .Y(n300) );
+  AO22X1_LVT U436 ( .A1(n19), .A2(n307), .A3(net39802), .A4(n308), .Y(n305) );
+  AO22X1_LVT U441 ( .A1(n19), .A2(n315), .A3(net39802), .A4(n316), .Y(n313) );
+  AO221X1_LVT U445 ( .A1(n159), .A2(n304), .A3(n21), .A4(n295), .A5(n22), .Y(
+        n823) );
+  AO21X1_LVT U451 ( .A1(n19), .A2(n302), .A3(n22), .Y(n322) );
+  NAND2X0_LVT U453 ( .A1(n325), .A2(n301), .Y(n320) );
+  NAND3X0_LVT U454 ( .A1(n26), .A2(n306), .A3(net39802), .Y(n325) );
+  NAND2X0_LVT U456 ( .A1(n327), .A2(n156), .Y(n298) );
+  NAND2X0_LVT U457 ( .A1(net38590), .A2(n328), .Y(n156) );
+  AND2X1_LVT U466 ( .A1(n337), .A2(n330), .Y(n332) );
+  AO22X1_LVT U467 ( .A1(n323), .A2(n314), .A3(n778), .A4(n338), .Y(n328) );
+  AO22X1_LVT U468 ( .A1(n335), .A2(n339), .A3(n337), .A4(n330), .Y(n338) );
+  NAND2X0_LVT U469 ( .A1(n336), .A2(n753), .Y(n337) );
+  OA21X1_LVT U470 ( .A1(n308), .A2(n31), .A3(n30), .Y(n336) );
+  NAND2X0_LVT U471 ( .A1(n27), .A2(n314), .Y(n308) );
+  NAND2X0_LVT U472 ( .A1(n319), .A2(n160), .Y(n316) );
+  AND2X1_LVT U473 ( .A1(n302), .A2(n321), .Y(n335) );
+  OR2X1_LVT U474 ( .A1(n307), .A2(n306), .Y(n302) );
+  OR2X1_LVT U475 ( .A1(n315), .A2(n314), .Y(n307) );
+  NAND2X0_LVT U476 ( .A1(n25), .A2(n39), .Y(n315) );
+  OA222X1_LVT U477 ( .A1(n340), .A2(n330), .A3(n342), .A4(n341), .A5(n755), 
+        .A6(n754), .Y(n323) );
+  NAND2X0_LVT U478 ( .A1(n345), .A2(n346), .Y(n342) );
+  AO22X1_LVT U479 ( .A1(\segwayMath_int/N39 ), .A2(n330), .A3(n755), .A4(n304), 
+        .Y(n346) );
+  AO22X1_LVT U480 ( .A1(\segwayMath_int/lft_steer_cntrl [5]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [13]), .A4(net38608), .Y(n304) );
+  NAND2X0_LVT U481 ( .A1(n349), .A2(n350), .Y(n347) );
+  AO22X1_LVT U482 ( .A1(\segwayMath_int/N36 ), .A2(n330), .A3(n755), .A4(n294), 
+        .Y(n345) );
+  NAND3X0_LVT U485 ( .A1(n354), .A2(n355), .A3(n356), .Y(n341) );
+  AO21X1_LVT U488 ( .A1(n229), .A2(n228), .A3(n63), .Y(n357) );
+  NAND2X0_LVT U490 ( .A1(steer_pot[3]), .A2(n169), .Y(n358) );
+  NAND2X0_LVT U491 ( .A1(steer_pot[4]), .A2(n169), .Y(n360) );
+  AO22X1_LVT U494 ( .A1(\segwayMath_int/N38 ), .A2(n330), .A3(n755), .A4(n312), 
+        .Y(n355) );
+  AO22X1_LVT U495 ( .A1(\segwayMath_int/lft_steer_cntrl [4]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [12]), .A4(net38608), .Y(n312) );
+  NAND2X0_LVT U496 ( .A1(n366), .A2(n367), .Y(n364) );
+  AO22X1_LVT U497 ( .A1(\segwayMath_int/N37 ), .A2(n330), .A3(n755), .A4(n293), 
+        .Y(n354) );
+  AO22X1_LVT U498 ( .A1(\segwayMath_int/lft_steer_cntrl [3]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [11]), .A4(net38608), .Y(n293) );
+  NAND2X0_LVT U499 ( .A1(n353), .A2(net39322), .Y(n368) );
+  AND2X1_LVT U502 ( .A1(n165), .A2(n166), .Y(n176) );
+  NAND2X0_LVT U503 ( .A1(n131), .A2(n169), .Y(n166) );
+  AND2X1_LVT U504 ( .A1(steer_pot[8]), .A2(n167), .Y(n165) );
+  AND2X1_LVT U505 ( .A1(steer_pot[7]), .A2(n170), .Y(n167) );
+  AND2X1_LVT U506 ( .A1(steer_pot[6]), .A2(n172), .Y(n170) );
+  AND2X1_LVT U507 ( .A1(steer_pot[5]), .A2(n174), .Y(n172) );
+  AND2X1_LVT U508 ( .A1(steer_pot[4]), .A2(n361), .Y(n174) );
+  AND2X1_LVT U509 ( .A1(steer_pot[3]), .A2(n359), .Y(n361) );
+  AND4X1_LVT U510 ( .A1(steer_pot[2]), .A2(steer_pot[1]), .A3(steer_pot[0]), 
+        .A4(n169), .Y(n359) );
+  AO222X1_LVT U511 ( .A1(steer_pot[10]), .A2(n129), .A3(steer_pot[9]), .A4(
+        n130), .A5(steer_pot[11]), .A6(n131), .Y(n169) );
+  OA221X1_LVT U514 ( .A1(n375), .A2(n91), .A3(n94), .A4(n376), .A5(n377), .Y(
+        n374) );
+  AO22X1_LVT U516 ( .A1(\segwayMath_int/lft_steer_cntrl [10]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [18]), .A4(net38608), .Y(n321) );
+  OA21X1_LVT U517 ( .A1(n382), .A2(n83), .A3(n383), .Y(n375) );
+  NAND2X0_LVT U519 ( .A1(n92), .A2(n380), .Y(n377) );
+  NAND2X0_LVT U520 ( .A1(n386), .A2(n385), .Y(n378) );
+  NAND2X0_LVT U521 ( .A1(n387), .A2(n388), .Y(n385) );
+  AND2X1_LVT U522 ( .A1(\segwayMath_int/mult_35/CARRYB[7][9] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][10] ), .Y(n379) );
+  NAND2X0_LVT U523 ( .A1(n389), .A2(n737), .Y(n376) );
+  AO22X1_LVT U524 ( .A1(\segwayMath_int/lft_steer_cntrl [8]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [16]), .A4(net38608), .Y(n314) );
+  NAND2X0_LVT U525 ( .A1(n392), .A2(n393), .Y(n390) );
+  NAND3X0_LVT U526 ( .A1(n25), .A2(n39), .A3(n31), .Y(n372) );
+  AO22X1_LVT U527 ( .A1(\segwayMath_int/lft_steer_cntrl [9]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [17]), .A4(net38608), .Y(n306) );
+  AOI21X1_LVT U528 ( .A1(n392), .A2(n391), .A3(n80), .Y(n382) );
+  NAND2X0_LVT U529 ( .A1(n81), .A2(n395), .Y(n393) );
+  AO21X1_LVT U530 ( .A1(n397), .A2(n398), .A3(n68), .Y(n391) );
+  NAND2X0_LVT U531 ( .A1(n400), .A2(n396), .Y(n392) );
+  NAND2X0_LVT U532 ( .A1(n401), .A2(n402), .Y(n396) );
+  NAND2X0_LVT U534 ( .A1(n84), .A2(n388), .Y(n383) );
+  NAND2X0_LVT U535 ( .A1(n405), .A2(n404), .Y(n384) );
+  NAND2X0_LVT U536 ( .A1(n403), .A2(n395), .Y(n404) );
+  AND2X1_LVT U537 ( .A1(\segwayMath_int/mult_35/SUMB[7][8] ), .A2(
+        \segwayMath_int/mult_35/CARRYB[7][7] ), .Y(n403) );
+  AND2X1_LVT U538 ( .A1(\segwayMath_int/mult_35/SUMB[7][9] ), .A2(
+        \segwayMath_int/mult_35/CARRYB[7][8] ), .Y(n387) );
+  NAND2X0_LVT U540 ( .A1(n408), .A2(n409), .Y(n406) );
+  AO22X1_LVT U541 ( .A1(\segwayMath_int/lft_steer_cntrl [7]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [15]), .A4(net38608), .Y(n319) );
+  AO21X1_LVT U542 ( .A1(n407), .A2(n408), .A3(n47), .Y(n397) );
+  NAND2X0_LVT U544 ( .A1(n413), .A2(n412), .Y(n408) );
+  NAND2X0_LVT U545 ( .A1(n49), .A2(n414), .Y(n412) );
+  AO21X1_LVT U546 ( .A1(n349), .A2(n348), .A3(n45), .Y(n407) );
+  NAND2X0_LVT U547 ( .A1(n46), .A2(n414), .Y(n350) );
+  AO21X1_LVT U548 ( .A1(n365), .A2(n366), .A3(n42), .Y(n348) );
+  NAND3X0_LVT U549 ( .A1(n418), .A2(n417), .A3(n419), .Y(n367) );
+  OA22X1_LVT U550 ( .A1(n420), .A2(n421), .A3(n56), .A4(n52), .Y(n419) );
+  AO221X1_LVT U552 ( .A1(n389), .A2(n422), .A3(n56), .A4(n52), .A5(n423), .Y(
+        n366) );
+  NAND2X0_LVT U553 ( .A1(n425), .A2(n424), .Y(n422) );
+  AO21X1_LVT U555 ( .A1(n426), .A2(n427), .A3(n421), .Y(n424) );
+  NAND2X0_LVT U556 ( .A1(net39453), .A2(n351), .Y(n353) );
+  OA21X1_LVT U557 ( .A1(n428), .A2(net39791), .A3(n370), .Y(n351) );
+  NAND2X0_LVT U565 ( .A1(n815), .A2(n185), .Y(n438) );
+  NAND2X0_LVT U568 ( .A1(n445), .A2(n417), .Y(n349) );
+  NAND2X0_LVT U569 ( .A1(n420), .A2(n421), .Y(n417) );
+  NOR2X0_LVT U570 ( .A1(n427), .A2(n426), .Y(n421) );
+  AO22X1_LVT U571 ( .A1(n433), .A2(n435), .A3(n447), .A4(n434), .Y(n427) );
+  NAND2X0_LVT U572 ( .A1(n815), .A2(n186), .Y(n434) );
+  OR2X1_LVT U573 ( .A1(n435), .A2(n433), .Y(n447) );
+  OR2X1_LVT U575 ( .A1(net39781), .A2(n441), .Y(n451) );
+  OR2X1_LVT U581 ( .A1(n190), .A2(net39784), .Y(n453) );
+  AND2X1_LVT U582 ( .A1(net38655), .A2(n186), .Y(n191) );
+  AO22X1_LVT U583 ( .A1(n95), .A2(n66), .A3(
+        \segwayMath_int/mult_35/CARRYB[2][3] ), .A4(n454), .Y(n190) );
+  NAND2X0_LVT U584 ( .A1(n193), .A2(n455), .Y(n454) );
+  NAND2X0_LVT U585 ( .A1(net38650), .A2(n186), .Y(n455) );
+  OA21X1_LVT U587 ( .A1(n467), .A2(\segwayMath_int/mult_35/SUMB[7][5] ), .A3(
+        n415), .Y(n420) );
+  NAND2X0_LVT U588 ( .A1(\segwayMath_int/mult_35/SUMB[7][5] ), .A2(n467), .Y(
+        n415) );
+  AO22X1_LVT U589 ( .A1(n53), .A2(n67), .A3(n468), .A4(n446), .Y(n467) );
+  AO22X1_LVT U590 ( .A1(n450), .A2(n448), .A3(n449), .A4(n469), .Y(n446) );
+  OR2X1_LVT U591 ( .A1(n448), .A2(n450), .Y(n469) );
+  AND2X1_LVT U592 ( .A1(net38665), .A2(n196), .Y(n449) );
+  AO22X1_LVT U593 ( .A1(n60), .A2(n71), .A3(n470), .A4(n465), .Y(n448) );
+  NAND2X0_LVT U601 ( .A1(n458), .A2(n456), .Y(n473) );
+  AND2X1_LVT U602 ( .A1(n817), .A2(n196), .Y(n457) );
+  NAND2X0_LVT U603 ( .A1(net38617), .A2(n181), .Y(n474) );
+  NAND3X0_LVT U604 ( .A1(n194), .A2(n196), .A3(net38622), .Y(n456) );
+  AND2X1_LVT U605 ( .A1(net38610), .A2(n181), .Y(n194) );
+  AND2X1_LVT U609 ( .A1(n75), .A2(n486), .Y(n483) );
+  NAND2X0_LVT U610 ( .A1(n466), .A2(n487), .Y(n470) );
+  NAND2X0_LVT U611 ( .A1(net38660), .A2(n196), .Y(n487) );
+  NAND2X0_LVT U612 ( .A1(n491), .A2(n492), .Y(n468) );
+  AOI22X1_LVT U613 ( .A1(n493), .A2(n494), .A3(n495), .A4(n496), .Y(n210) );
+  OR2X1_LVT U614 ( .A1(n494), .A2(n493), .Y(n496) );
+  AO22X1_LVT U615 ( .A1(n88), .A2(n90), .A3(n497), .A4(n498), .Y(n214) );
+  NAND2X0_LVT U616 ( .A1(n499), .A2(n500), .Y(n497) );
+  AO22X1_LVT U617 ( .A1(n501), .A2(n502), .A3(n503), .A4(n504), .Y(n217) );
+  OR2X1_LVT U618 ( .A1(n502), .A2(n501), .Y(n504) );
+  NAND2X0_LVT U619 ( .A1(net38650), .A2(n178), .Y(n219) );
+  AND2X1_LVT U620 ( .A1(net38655), .A2(net39915), .Y(n215) );
+  NAND2X0_LVT U621 ( .A1(net38660), .A2(n772), .Y(n211) );
+  AND2X1_LVT U622 ( .A1(net38665), .A2(n181), .Y(n207) );
+  AO22X1_LVT U623 ( .A1(n70), .A2(n79), .A3(n505), .A4(n489), .Y(n206) );
+  AO22X1_LVT U624 ( .A1(n82), .A2(n72), .A3(n506), .A4(n488), .Y(n489) );
+  AO22X1_LVT U625 ( .A1(n73), .A2(n75), .A3(n86), .A4(n485), .Y(n488) );
+  NAND2X0_LVT U626 ( .A1(n507), .A2(n486), .Y(n485) );
+  NAND3X0_LVT U630 ( .A1(net38622), .A2(n181), .A3(n475), .Y(n481) );
+  NAND2X0_LVT U632 ( .A1(n817), .A2(n181), .Y(n480) );
+  NAND2X0_LVT U633 ( .A1(net38650), .A2(n181), .Y(n486) );
+  NAND2X0_LVT U634 ( .A1(n513), .A2(n514), .Y(n506) );
+  NAND2X0_LVT U635 ( .A1(net38655), .A2(n181), .Y(n514) );
+  NAND2X0_LVT U636 ( .A1(n490), .A2(n518), .Y(n505) );
+  AND2X1_LVT U637 ( .A1(net38610), .A2(n183), .Y(n220) );
+  NAND2X0_LVT U639 ( .A1(net38621), .A2(n177), .Y(n519) );
+  AND2X1_LVT U640 ( .A1(n817), .A2(n178), .Y(n503) );
+  AND3X1_LVT U641 ( .A1(net38618), .A2(n178), .A3(n520), .Y(n501) );
+  NAND2X0_LVT U642 ( .A1(net38650), .A2(net39915), .Y(n500) );
+  AO22X1_LVT U643 ( .A1(n521), .A2(n522), .A3(n523), .A4(n524), .Y(n498) );
+  OR2X1_LVT U644 ( .A1(n522), .A2(n521), .Y(n524) );
+  AND2X1_LVT U645 ( .A1(net38655), .A2(n772), .Y(n495) );
+  AO22X1_LVT U646 ( .A1(n517), .A2(n515), .A3(n516), .A4(n525), .Y(n494) );
+  OR2X1_LVT U647 ( .A1(n517), .A2(n515), .Y(n525) );
+  AND2X1_LVT U648 ( .A1(net38650), .A2(n772), .Y(n516) );
+  AO22X1_LVT U649 ( .A1(n85), .A2(n87), .A3(n509), .A4(n526), .Y(n515) );
+  NAND2X0_LVT U650 ( .A1(n510), .A2(n508), .Y(n526) );
+  AND2X1_LVT U651 ( .A1(n817), .A2(n772), .Y(n509) );
+  NAND2X0_LVT U652 ( .A1(net38620), .A2(net39915), .Y(n527) );
+  AND2X1_LVT U656 ( .A1(net38610), .A2(n177), .Y(n520) );
+  NAND2X0_LVT U658 ( .A1(net38622), .A2(n178), .Y(n532) );
+  AND2X1_LVT U659 ( .A1(n817), .A2(net39915), .Y(n523) );
+  AND2X1_LVT U661 ( .A1(net38610), .A2(n178), .Y(n528) );
+  NAND2X0_LVT U664 ( .A1(net38660), .A2(n181), .Y(n518) );
+  NAND2X0_LVT U666 ( .A1(n815), .A2(n196), .Y(n492) );
+  NAND2X0_LVT U673 ( .A1(n398), .A2(n399), .Y(n410) );
+  NAND2X0_LVT U674 ( .A1(n69), .A2(n402), .Y(n399) );
+  NAND2X0_LVT U675 ( .A1(n542), .A2(n541), .Y(n398) );
+  NAND2X0_LVT U676 ( .A1(n416), .A2(n411), .Y(n541) );
+  AND2X1_LVT U677 ( .A1(\segwayMath_int/mult_35/SUMB[7][6] ), .A2(
+        \segwayMath_int/mult_35/CARRYB[7][5] ), .Y(n416) );
+  AND2X1_LVT U678 ( .A1(\segwayMath_int/mult_35/SUMB[7][7] ), .A2(
+        \segwayMath_int/mult_35/CARRYB[7][6] ), .Y(n401) );
+  OA21X1_LVT U679 ( .A1(n815), .A2(n543), .A3(pwr_up), .Y(\PID_int/n75 ) );
+  AO21X1_LVT U680 ( .A1(pwr_up), .A2(n544), .A3(n545), .Y(\PID_int/n74 ) );
+  AO21X1_LVT U681 ( .A1(pwr_up), .A2(n547), .A3(n545), .Y(\PID_int/n73 ) );
+  AO21X1_LVT U682 ( .A1(pwr_up), .A2(n549), .A3(n545), .Y(\PID_int/n72 ) );
+  AO21X1_LVT U683 ( .A1(pwr_up), .A2(n551), .A3(n545), .Y(\PID_int/n71 ) );
+  AO21X1_LVT U684 ( .A1(pwr_up), .A2(n553), .A3(n545), .Y(\PID_int/n70 ) );
+  AO21X1_LVT U685 ( .A1(pwr_up), .A2(n555), .A3(n545), .Y(\PID_int/n69 ) );
+  AO21X1_LVT U686 ( .A1(pwr_up), .A2(n557), .A3(n545), .Y(\PID_int/n68 ) );
+  AO21X1_LVT U687 ( .A1(n559), .A2(pwr_up), .A3(n545), .Y(\PID_int/n67 ) );
+  AO21X1_LVT U688 ( .A1(n561), .A2(net38590), .A3(n545), .Y(\PID_int/n66 ) );
+  AO21X1_LVT U689 ( .A1(n563), .A2(net38590), .A3(n545), .Y(\PID_int/n65 ) );
+  AO21X1_LVT U690 ( .A1(n565), .A2(net38590), .A3(n545), .Y(\PID_int/n64 ) );
+  AO21X1_LVT U691 ( .A1(n567), .A2(net38590), .A3(n545), .Y(\PID_int/n63 ) );
+  AO21X1_LVT U692 ( .A1(n569), .A2(pwr_up), .A3(n545), .Y(\PID_int/n62 ) );
+  AO21X1_LVT U693 ( .A1(n571), .A2(net38590), .A3(n545), .Y(\PID_int/n61 ) );
+  AO21X1_LVT U694 ( .A1(n573), .A2(net38590), .A3(n545), .Y(\PID_int/n60 ) );
+  AO21X1_LVT U695 ( .A1(n575), .A2(net38590), .A3(n545), .Y(\PID_int/n59 ) );
+  AO21X1_LVT U696 ( .A1(n577), .A2(net38590), .A3(n545), .Y(\PID_int/n58 ) );
+  AO21X1_LVT U697 ( .A1(pwr_up), .A2(n150), .A3(n545), .Y(\PID_int/n57 ) );
+  AND2X1_LVT U699 ( .A1(n546), .A2(net38665), .Y(n543) );
+  AND2X1_LVT U700 ( .A1(n548), .A2(net38660), .Y(n546) );
+  AND2X1_LVT U701 ( .A1(n550), .A2(net38655), .Y(n548) );
+  AND2X1_LVT U702 ( .A1(n552), .A2(net38650), .Y(n550) );
+  AND2X1_LVT U703 ( .A1(n554), .A2(n817), .Y(n552) );
+  AND2X1_LVT U704 ( .A1(n556), .A2(net38619), .Y(n554) );
+  AND2X1_LVT U705 ( .A1(n558), .A2(net38610), .Y(n556) );
+  NOR2X0_LVT U706 ( .A1(n560), .A2(n695), .Y(n558) );
+  OR2X1_LVT U707 ( .A1(n562), .A2(n687), .Y(n560) );
+  OR2X1_LVT U708 ( .A1(n564), .A2(n689), .Y(n562) );
+  OR2X1_LVT U709 ( .A1(n566), .A2(n688), .Y(n564) );
+  OR2X1_LVT U710 ( .A1(n568), .A2(n694), .Y(n566) );
+  OR2X1_LVT U711 ( .A1(n570), .A2(n693), .Y(n568) );
+  OR2X1_LVT U712 ( .A1(n572), .A2(n692), .Y(n570) );
+  OR2X1_LVT U713 ( .A1(n574), .A2(n691), .Y(n572) );
+  OR2X1_LVT U714 ( .A1(n576), .A2(n690), .Y(n574) );
+  OR2X1_LVT U715 ( .A1(n150), .A2(n686), .Y(n576) );
+  OR2X1_LVT U718 ( .A1(n579), .A2(n578), .Y(n580) );
+  AO22X1_LVT U719 ( .A1(n531), .A2(n530), .A3(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[6] ), .A4(n581), .Y(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[7] ) );
+  OR2X1_LVT U720 ( .A1(n531), .A2(n530), .Y(n581) );
+  AO22X1_LVT U723 ( .A1(n589), .A2(\PID_int/ptch_err_sat [6]), .A3(n590), .A4(
+        n103), .Y(\PID_int/P_term [8]) );
+  AO21X1_LVT U724 ( .A1(\PID_int/ptch_err_sat [4]), .A2(
+        \PID_int/ptch_err_sat [5]), .A3(n104), .Y(n593) );
+  NAND2X0_LVT U725 ( .A1(net38738), .A2(n759), .Y(n597) );
+  NAND2X0_LVT U731 ( .A1(n609), .A2(n610), .Y(n608) );
+  AO21X1_LVT U732 ( .A1(n611), .A2(\PID_int/ptch_err_sat [7]), .A3(n100), .Y(
+        n609) );
+  NAND3X0_LVT U733 ( .A1(n101), .A2(n107), .A3(n103), .Y(n611) );
+  AO21X1_LVT U749 ( .A1(n101), .A2(n103), .A3(n100), .Y(n626) );
+  AO22X1_LVT U772 ( .A1(n629), .A2(\PID_int/integrator [17]), .A3(n813), .A4(
+        \PID_int/ptch_err_sat_SEA [17]), .Y(\PID_int/N60 ) );
+  AO22X1_LVT U773 ( .A1(n629), .A2(n147), .A3(\PID_int/ptch_err_sat_SEA [16]), 
+        .A4(n812), .Y(\PID_int/N59 ) );
+  AO22X1_LVT U774 ( .A1(n629), .A2(n149), .A3(\PID_int/ptch_err_sat_SEA [15]), 
+        .A4(n812), .Y(\PID_int/N58 ) );
+  AO22X1_LVT U775 ( .A1(n629), .A2(n146), .A3(\PID_int/ptch_err_sat_SEA [14]), 
+        .A4(n812), .Y(\PID_int/N57 ) );
+  AO22X1_LVT U776 ( .A1(n629), .A2(n138), .A3(\PID_int/ptch_err_sat_SEA [13]), 
+        .A4(n812), .Y(\PID_int/N56 ) );
+  AO22X1_LVT U777 ( .A1(n629), .A2(n137), .A3(\PID_int/ptch_err_sat_SEA [12]), 
+        .A4(n812), .Y(\PID_int/N55 ) );
+  AO22X1_LVT U778 ( .A1(n629), .A2(n136), .A3(\PID_int/ptch_err_sat_SEA [11]), 
+        .A4(n812), .Y(\PID_int/N54 ) );
+  AO22X1_LVT U779 ( .A1(n629), .A2(n135), .A3(\PID_int/ptch_err_sat_SEA [10]), 
+        .A4(n812), .Y(\PID_int/N53 ) );
+  AO22X1_LVT U780 ( .A1(n629), .A2(n134), .A3(\PID_int/ptch_err_sat_SEA [9]), 
+        .A4(n812), .Y(\PID_int/N52 ) );
+  AO22X1_LVT U781 ( .A1(n629), .A2(n133), .A3(\PID_int/ptch_err_sat_SEA [8]), 
+        .A4(n812), .Y(\PID_int/N51 ) );
+  AO22X1_LVT U782 ( .A1(n629), .A2(n145), .A3(\PID_int/ptch_err_sat_SEA [7]), 
+        .A4(n813), .Y(\PID_int/N50 ) );
+  AO22X1_LVT U783 ( .A1(n629), .A2(n144), .A3(\PID_int/ptch_err_sat_SEA [6]), 
+        .A4(n813), .Y(\PID_int/N49 ) );
+  AO22X1_LVT U784 ( .A1(n629), .A2(n143), .A3(\PID_int/ptch_err_sat_SEA [5]), 
+        .A4(n813), .Y(\PID_int/N48 ) );
+  AO22X1_LVT U785 ( .A1(n629), .A2(n142), .A3(\PID_int/ptch_err_sat_SEA [4]), 
+        .A4(n813), .Y(\PID_int/N47 ) );
+  AO22X1_LVT U786 ( .A1(n629), .A2(n141), .A3(\PID_int/ptch_err_sat_SEA [3]), 
+        .A4(n813), .Y(\PID_int/N46 ) );
+  AO22X1_LVT U787 ( .A1(n629), .A2(n140), .A3(\PID_int/ptch_err_sat_SEA [2]), 
+        .A4(n813), .Y(\PID_int/N45 ) );
+  AO22X1_LVT U788 ( .A1(n629), .A2(n139), .A3(\PID_int/ptch_err_sat_SEA [1]), 
+        .A4(n813), .Y(\PID_int/N44 ) );
+  AO22X1_LVT U789 ( .A1(n629), .A2(\PID_int/integrator [0]), .A3(
+        \PID_int/ptch_err_sat_SEA [0]), .A4(n813), .Y(\PID_int/N43 ) );
+  OR3X1_LVT U795 ( .A1(ptch[14]), .A2(ptch[9]), .A3(ptch[13]), .Y(n633) );
+  AO22X1_LVT U799 ( .A1(net39502), .A2(n637), .A3(n638), .A4(n110), .Y(n578)
+         );
+  OR2X1_LVT U803 ( .A1(n642), .A2(n641), .Y(n643) );
+  OR2X1_LVT U806 ( .A1(n645), .A2(n644), .Y(n646) );
+  AO22X1_LVT U808 ( .A1(n647), .A2(n648), .A3(n649), .A4(n110), .Y(n644) );
+  OR2X1_LVT U809 ( .A1(n648), .A2(n647), .Y(n649) );
+  AO21X1_LVT U810 ( .A1(n639), .A2(n136), .A3(net39303), .Y(n645) );
+  AO22X1_LVT U811 ( .A1(n650), .A2(n651), .A3(n652), .A4(n111), .Y(n647) );
+  OR2X1_LVT U812 ( .A1(n651), .A2(n650), .Y(n652) );
+  AO21X1_LVT U813 ( .A1(n639), .A2(n135), .A3(net39303), .Y(n648) );
+  AO22X1_LVT U814 ( .A1(n787), .A2(n654), .A3(n655), .A4(n112), .Y(n650) );
+  AO21X1_LVT U816 ( .A1(n639), .A2(n134), .A3(net39303), .Y(n651) );
+  OR2X1_LVT U818 ( .A1(n587), .A2(n588), .Y(n656) );
+  AO21X1_LVT U819 ( .A1(n639), .A2(n145), .A3(net39303), .Y(n587) );
+  AO22X1_LVT U820 ( .A1(n765), .A2(n658), .A3(n659), .A4(n114), .Y(n588) );
+  OR2X1_LVT U821 ( .A1(n658), .A2(n657), .Y(n659) );
+  AO21X1_LVT U822 ( .A1(n639), .A2(n133), .A3(net39303), .Y(n654) );
+  AO22X1_LVT U823 ( .A1(n660), .A2(n661), .A3(n662), .A4(n115), .Y(n657) );
+  OR2X1_LVT U824 ( .A1(n661), .A2(n660), .Y(n662) );
+  AO21X1_LVT U825 ( .A1(n639), .A2(n144), .A3(net39303), .Y(n658) );
+  AO22X1_LVT U826 ( .A1(n786), .A2(n664), .A3(n665), .A4(n116), .Y(n660) );
+  AO21X1_LVT U828 ( .A1(n639), .A2(n143), .A3(net39303), .Y(n661) );
+  OR2X1_LVT U830 ( .A1(n443), .A2(n444), .Y(n666) );
+  AND2X1_LVT U833 ( .A1(n225), .A2(n224), .Y(n667) );
+  NAND2X0_LVT U835 ( .A1(n227), .A2(n118), .Y(n225) );
+  AO21X1_LVT U836 ( .A1(n639), .A2(n139), .A3(n640), .Y(n227) );
+  AO21X1_LVT U837 ( .A1(n639), .A2(n142), .A3(net39303), .Y(n664) );
+  NAND3X0_LVT U841 ( .A1(n684), .A2(n685), .A3(n683), .Y(n669) );
+  NAND3X0_LVT U842 ( .A1(n149), .A2(n146), .A3(n147), .Y(n668) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[17]  ( .D(n740), .SETB(1'b1), .RSTB(
+        \PID_int/ride_off_cond_integrator [17]), .CLK(clk), .Q(
+        \PID_int/integrator [17]), .QN(\PID_int/n15 ) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[26]  ( .D(\PID_int/n75 ), .CLK(clk), 
+        .RSTB(n740), .Q(n834), .QN(n737) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[25]  ( .D(\PID_int/n74 ), .CLK(clk), 
+        .RSTB(n740), .Q(n835) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[24]  ( .D(\PID_int/n73 ), .CLK(clk), 
+        .RSTB(rst_n), .Q(n836) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[23]  ( .D(\PID_int/n72 ), .CLK(clk), 
+        .RSTB(n739), .Q(n837) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[22]  ( .D(\PID_int/n71 ), .CLK(clk), 
+        .RSTB(n740), .Q(n838) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[21]  ( .D(\PID_int/n70 ), .CLK(clk), 
+        .RSTB(rst_n), .Q(n839) );
+  DFFARX1_LVT \PID_int/post_ss_tmr_reg[19]  ( .D(\PID_int/n68 ), .CLK(clk), 
+        .RSTB(n739), .Q(n841) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[16]  ( .D(1'b0), .SETB(\PID_int/n16 ), 
+        .RSTB(n739), .CLK(clk), .Q(n147), .QN(n685) );
+  FADDX1_LVT \PID_int/add_148/U1_15  ( .A(n98), .B(n149), .CI(
+        \PID_int/add_148/carry [15]), .CO(\PID_int/add_148/carry [16]), .S(
+        \PID_int/ptch_err_sat_SEA [15]) );
+  DFFX1_LVT \PID_int/integrator_reg[14]  ( .D(n752), .CLK(clk), .Q(n146), .QN(
+        n683) );
+  NAND2X0_LVT U387 ( .A1(n264), .A2(net39746), .Y(n260) );
+  AO22X1_LVT U370 ( .A1(n10), .A2(n240), .A3(n11), .A4(n241), .Y(n238) );
+  OR2X1_LVT U419 ( .A1(n246), .A2(n247), .Y(n241) );
+  NAND3X0_LVT U376 ( .A1(n18), .A2(n37), .A3(n10), .Y(n242) );
+  NAND2X0_LVT U414 ( .A1(n253), .A2(n252), .Y(n248) );
+  NAND2X0_LVT U420 ( .A1(n38), .A2(n16), .Y(n247) );
+  AO22X1_LVT U375 ( .A1(n11), .A2(n247), .A3(n10), .A4(n248), .Y(n245) );
+  NAND2X0_LVT U374 ( .A1(n245), .A2(n246), .Y(n243) );
+  DFFSSRX1_LVT \PID_int/integrator_reg[15]  ( .D(1'b0), .SETB(n7), .RSTB(
+        \PID_int/ride_off_cond_integrator [15]), .CLK(clk), .Q(n149), .QN(n684) );
+  XNOR2X2_LVT U52 ( .A1(n410), .A2(n397), .Y(\segwayMath_int/PID_SS_inter [15]) );
+  AO22X1_LVT U423 ( .A1(\segwayMath_int/rght_steer_cntrl[9] ), .A2(en_steer), 
+        .A3(\segwayMath_int/PID_SS_inter [17]), .A4(net38608), .Y(n239) );
+  AO22X1_LVT U422 ( .A1(\segwayMath_int/rght_steer_cntrl[10] ), .A2(en_steer), 
+        .A3(\segwayMath_int/PID_SS_inter [18]), .A4(net38608), .Y(n261) );
+  XOR3X2_LVT \segwayMath_int/sub_51/U2_12  ( .A1(
+        \segwayMath_int/PID_SS_inter [19]), .A2(n697), .A3(
+        \segwayMath_int/sub_51/carry[12] ), .Y(
+        \segwayMath_int/rght_steer_cntrl[12] ) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_9  ( .A(
+        \segwayMath_int/PID_SS_inter [17]), .B(n697), .CI(
+        \segwayMath_int/sub_51/carry[9] ), .CO(
+        \segwayMath_int/sub_51/carry[10] ), .S(
+        \segwayMath_int/rght_steer_cntrl[9] ) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_10  ( .A(
+        \segwayMath_int/PID_SS_inter [18]), .B(n697), .CI(
+        \segwayMath_int/sub_51/carry[10] ), .CO(
+        \segwayMath_int/sub_51/carry[11] ), .S(
+        \segwayMath_int/rght_steer_cntrl[10] ) );
+  AND2X1_LVT U401 ( .A1(\segwayMath_int/N75 ), .A2(n268), .Y(n282) );
+  AND2X1_LVT U513 ( .A1(\segwayMath_int/PID_SS_inter [19]), .A2(net38608), .Y(
+        n292) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_11  ( .A(
+        \segwayMath_int/PID_SS_inter [19]), .B(n697), .CI(
+        \segwayMath_int/sub_51/carry[11] ), .CO(
+        \segwayMath_int/sub_51/carry[12] ), .S(
+        \segwayMath_int/rght_steer_cntrl[11] ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_1  ( .A0(n57), .B0(n62), .C1(
+        \segwayMath_int/add_83/carry[2] ), .SO(\segwayMath_int/N65 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_2  ( .A0(n54), .B0(
+        \segwayMath_int/add_83/carry[2] ), .C1(
+        \segwayMath_int/add_83/carry[3] ), .SO(\segwayMath_int/N66 ) );
+  AO22X1_LVT U429 ( .A1(\segwayMath_int/rght_steer_cntrl [3]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [11]), .A4(net38608), .Y(n250) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_3  ( .A0(n50), .B0(
+        \segwayMath_int/add_83/carry[3] ), .C1(
+        \segwayMath_int/add_83/carry[4] ), .SO(\segwayMath_int/N67 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_4  ( .A0(n43), .B0(
+        \segwayMath_int/add_83/carry[4] ), .C1(
+        \segwayMath_int/add_83/carry[5] ), .SO(\segwayMath_int/N68 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_5  ( .A0(n40), .B0(
+        \segwayMath_int/add_83/carry[5] ), .C1(
+        \segwayMath_int/add_83/carry[6] ), .SO(\segwayMath_int/N69 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_6  ( .A0(n38), .B0(
+        \segwayMath_int/add_83/carry[6] ), .C1(
+        \segwayMath_int/add_83/carry[7] ), .SO(\segwayMath_int/N70 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_7  ( .A0(n16), .B0(
+        \segwayMath_int/add_83/carry[7] ), .C1(
+        \segwayMath_int/add_83/carry[8] ), .SO(\segwayMath_int/N71 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_8  ( .A0(n37), .B0(
+        \segwayMath_int/add_83/carry[8] ), .C1(
+        \segwayMath_int/add_83/carry[9] ), .SO(\segwayMath_int/N72 ) );
+  HADDX2_LVT \segwayMath_int/add_83/U1_1_9  ( .A0(n36), .B0(
+        \segwayMath_int/add_83/carry[9] ), .C1(
+        \segwayMath_int/add_83/carry[10] ), .SO(\segwayMath_int/N73 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_10  ( .A0(net38737), .B0(
+        \segwayMath_int/add_83/carry[10] ), .C1(
+        \segwayMath_int/add_83/carry[11] ), .SO(\segwayMath_int/N74 ) );
+  HADDX1_LVT \segwayMath_int/add_83/U1_1_11  ( .A0(
+        \segwayMath_int/add_83/carry[11] ), .B0(n721), .C1(
+        \segwayMath_int/add_83/carry[12] ), .SO(\segwayMath_int/N75 ) );
+  AO21X1_LVT U409 ( .A1(n15), .A2(net38734), .A3(n288), .Y(n278) );
+  NAND2X0_LVT U406 ( .A1(n286), .A2(n287), .Y(n279) );
+  AO22X1_LVT U424 ( .A1(\segwayMath_int/rght_steer_cntrl [8]), .A2(en_steer), 
+        .A3(\segwayMath_int/PID_SS_inter [16]), .A4(net38608), .Y(n246) );
+  NAND4X0_LVT U400 ( .A1(n281), .A2(n279), .A3(n280), .A4(n278), .Y(n269) );
+  NAND2X0_LVT U411 ( .A1(n268), .A2(n274), .Y(n291) );
+  AND2X1_LVT U417 ( .A1(n236), .A2(n261), .Y(n275) );
+  NAND2X0_LVT U415 ( .A1(n275), .A2(net38734), .Y(n290) );
+  AO22X1_LVT U396 ( .A1(n732), .A2(n252), .A3(n270), .A4(n269), .Y(n266) );
+  AO22X1_LVT U399 ( .A1(n277), .A2(n269), .A3(n732), .A4(n246), .Y(n276) );
+  NAND2X0_LVT U398 ( .A1(net38590), .A2(n276), .Y(n161) );
+  NAND2X0_LVT U393 ( .A1(net39745), .A2(n263), .Y(n265) );
+  AO221X1_LVT U380 ( .A1(n254), .A2(n258), .A3(n12), .A4(n259), .A5(n13), .Y(
+        n829) );
+  AO221X1_LVT U378 ( .A1(n38), .A2(n254), .A3(n12), .A4(n255), .A5(n13), .Y(
+        n828) );
+  AO22X1_LVT U487 ( .A1(n228), .A2(net38608), .A3(net38596), .A4(n357), .Y(
+        n259) );
+  OA21X1_LVT U288 ( .A1(n164), .A2(n163), .A3(n825), .Y(n162) );
+  AND2X1_LVT U283 ( .A1(n818), .A2(net39905), .Y(n155) );
+  AO22X1_LVT U539 ( .A1(\segwayMath_int/lft_steer_cntrl [6]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [14]), .A4(net38608), .Y(n160) );
+  NAND4X0_LVT U286 ( .A1(n44), .A2(n51), .A3(n41), .A4(n160), .Y(n158) );
+  AOI21X1_LVT U285 ( .A1(n158), .A2(n159), .A3(n821), .Y(n157) );
+  NAND4X0_LVT U284 ( .A1(n58), .A2(n55), .A3(n157), .A4(n62), .Y(n154) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_7  ( .A(\PID_int/N29 ), .B(\PID_int/P_term [7]), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[7] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[8] ), .S(
+        \PID_int/PID_inter [7]) );
+  NAND2X0_LVT U629 ( .A1(net38610), .A2(n179), .Y(n511) );
+  XOR2X2_LVT U80 ( .A1(n512), .A2(n511), .Y(n479) );
+  AO22X1_LVT U594 ( .A1(n464), .A2(n462), .A3(n463), .A4(n471), .Y(n465) );
+  OR2X1_LVT U595 ( .A1(n462), .A2(n464), .Y(n471) );
+  AND2X1_LVT U599 ( .A1(net38650), .A2(n196), .Y(n460) );
+  AND2X1_LVT U628 ( .A1(n480), .A2(net39751), .Y(n477) );
+  OR2X1_LVT U598 ( .A1(n459), .A2(n461), .Y(n472) );
+  AO22X1_LVT U600 ( .A1(n65), .A2(n78), .A3(n457), .A4(n473), .Y(n459) );
+  AO222X1_LVT U608 ( .A1(n482), .A2(n73), .A3(n483), .A4(n484), .A5(n74), .A6(
+        n86), .Y(n464) );
+  AND2X1_LVT U596 ( .A1(net38655), .A2(n196), .Y(n463) );
+  AO22X1_LVT U597 ( .A1(net38706), .A2(n459), .A3(n472), .A4(n460), .Y(n462)
+         );
+  NAND2X0_LVT U562 ( .A1(n437), .A2(n438), .Y(n436) );
+  AND2X1_LVT U576 ( .A1(net38665), .A2(n186), .Y(n440) );
+  AND2X1_LVT U579 ( .A1(net38660), .A2(n186), .Y(n188) );
+  OR2X1_LVT U578 ( .A1(n187), .A2(n716), .Y(n452) );
+  AO22X1_LVT U580 ( .A1(net39784), .A2(n190), .A3(n191), .A4(n453), .Y(n187)
+         );
+  AO22X1_LVT U577 ( .A1(n716), .A2(n187), .A3(n452), .A4(n188), .Y(n439) );
+  AO22X1_LVT U561 ( .A1(n717), .A2(n59), .A3(n436), .A4(
+        \segwayMath_int/mult_35/CARRYB[6][2] ), .Y(n431) );
+  AND2X1_LVT U563 ( .A1(\segwayMath_int/mult_35/CARRYB[7][1] ), .A2(n430), .Y(
+        n428) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_6_2  ( .A(
+        \segwayMath_int/mult_35/ab[6][2] ), .B(
+        \segwayMath_int/mult_35/CARRYB[5][2] ), .CI(
+        \segwayMath_int/mult_35/SUMB[5][3] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[6][2] ), .S(
+        \segwayMath_int/mult_35/SUMB[6][2] ) );
+  FADDX1_LVT \segwayMath_int/mult_35/S2_7_1  ( .A(
+        \segwayMath_int/mult_35/ab[7][1] ), .B(
+        \segwayMath_int/mult_35/CARRYB[6][1] ), .CI(
+        \segwayMath_int/mult_35/SUMB[6][2] ), .CO(
+        \segwayMath_int/mult_35/CARRYB[7][1] ), .S(
+        \segwayMath_int/mult_35/SUMB[7][1] ) );
+  AO22X1_LVT U492 ( .A1(\segwayMath_int/lft_steer_cntrl[1] ), .A2(net38596), 
+        .A3(net39526), .A4(net38608), .Y(n295) );
+  NOR2X0_LVT U564 ( .A1(n363), .A2(n362), .Y(n352) );
+  NAND2X0_LVT U567 ( .A1(\segwayMath_int/mult_35/SUMB[7][1] ), .A2(
+        \segwayMath_int/mult_35/CARRYB[7][0] ), .Y(n363) );
+  AO22X1_LVT U431 ( .A1(\segwayMath_int/rght_steer_cntrl[1] ), .A2(net38596), 
+        .A3(net39526), .A4(net38608), .Y(n257) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_1  ( .A(
+        \segwayMath_int/steer_pot_inter[4] ), .B(
+        \segwayMath_int/steer_pot_inter[5] ), .CI(
+        \segwayMath_int/add_43/carry[1] ), .CO(
+        \segwayMath_int/add_43/carry[2] ), .S(
+        \segwayMath_int/steer_control_div[1] ) );
+  OR2X1_LVT U489 ( .A1(n228), .A2(n229), .Y(\segwayMath_int/sub_51/carry[1] )
+         );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_1  ( .A(
+        \segwayMath_int/sub_51/carry[1] ), .B(n127), .CI(net39526), .CO(
+        \segwayMath_int/sub_51/carry[2] ), .S(
+        \segwayMath_int/rght_steer_cntrl[1] ) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_2  ( .A(
+        \segwayMath_int/steer_pot_inter[5] ), .B(
+        \segwayMath_int/steer_pot_inter[6] ), .CI(
+        \segwayMath_int/add_43/carry[2] ), .CO(
+        \segwayMath_int/add_43/carry[3] ), .S(
+        \segwayMath_int/steer_control_div[2] ) );
+  AO22X1_LVT U428 ( .A1(\segwayMath_int/rght_steer_cntrl[4] ), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [12]), .A4(net38608), .Y(n258) );
+  AO22X1_LVT U427 ( .A1(\segwayMath_int/rght_steer_cntrl[5] ), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [13]), .A4(net38608), .Y(n256) );
+  AO22X1_LVT U426 ( .A1(\segwayMath_int/rght_steer_cntrl[6] ), .A2(en_steer), 
+        .A3(\segwayMath_int/PID_SS_inter [14]), .A4(net38608), .Y(n253) );
+  XNOR2X2_LVT U38 ( .A1(n368), .A2(n369), .Y(\segwayMath_int/PID_SS_inter [11]) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_2  ( .A(
+        \segwayMath_int/PID_SS_inter [10]), .B(n126), .CI(
+        \segwayMath_int/sub_51/carry[2] ), .CO(
+        \segwayMath_int/sub_51/carry[3] ), .S(
+        \segwayMath_int/rght_steer_cntrl[2] ) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_4  ( .A(
+        \segwayMath_int/steer_pot_inter[7] ), .B(
+        \segwayMath_int/steer_pot_inter[8] ), .CI(
+        \segwayMath_int/add_43/carry[4] ), .CO(
+        \segwayMath_int/add_43/carry[5] ), .S(
+        \segwayMath_int/steer_control_div[4] ) );
+  XNOR2X2_LVT U37 ( .A1(n364), .A2(n365), .Y(\segwayMath_int/PID_SS_inter [12]) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_4  ( .A(
+        \segwayMath_int/PID_SS_inter [12]), .B(n124), .CI(
+        \segwayMath_int/sub_51/carry[4] ), .CO(
+        \segwayMath_int/sub_51/carry[5] ), .S(
+        \segwayMath_int/rght_steer_cntrl[4] ) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_5  ( .A(
+        \segwayMath_int/steer_pot_inter[8] ), .B(
+        \segwayMath_int/steer_pot_inter[9] ), .CI(
+        \segwayMath_int/add_43/carry[5] ), .CO(
+        \segwayMath_int/add_43/carry[6] ), .S(
+        \segwayMath_int/steer_control_div[5] ) );
+  XNOR2X2_LVT U32 ( .A1(n347), .A2(n348), .Y(\segwayMath_int/PID_SS_inter [13]) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_5  ( .A(
+        \segwayMath_int/PID_SS_inter [13]), .B(n123), .CI(
+        \segwayMath_int/sub_51/carry[5] ), .CO(
+        \segwayMath_int/sub_51/carry[6] ), .S(
+        \segwayMath_int/rght_steer_cntrl[5] ) );
+  FADDX1_LVT \segwayMath_int/add_43/U1_6  ( .A(
+        \segwayMath_int/steer_pot_inter[9] ), .B(
+        \segwayMath_int/steer_pot_inter[10] ), .CI(
+        \segwayMath_int/add_43/carry[6] ), .CO(
+        \segwayMath_int/add_43/carry[7] ), .S(
+        \segwayMath_int/steer_control_div[6] ) );
+  XNOR2X2_LVT U51 ( .A1(n406), .A2(n407), .Y(\segwayMath_int/PID_SS_inter [14]) );
+  FADDX1_LVT \segwayMath_int/sub_51/U2_6  ( .A(
+        \segwayMath_int/PID_SS_inter [14]), .B(n122), .CI(
+        \segwayMath_int/sub_51/carry[6] ), .CO(
+        \segwayMath_int/sub_51/carry[7] ), .S(
+        \segwayMath_int/rght_steer_cntrl[6] ) );
+  NAND3X0_LVT U738 ( .A1(n616), .A2(n98), .A3(n99), .Y(n604) );
+  AND2X1_LVT U747 ( .A1(n99), .A2(n98), .Y(n615) );
+  OA21X1_LVT U737 ( .A1(n616), .A2(n615), .A3(n604), .Y(n614) );
+  AO22X1_LVT U748 ( .A1(n625), .A2(\PID_int/ptch_err_sat [7]), .A3(n626), .A4(
+        n106), .Y(n613) );
+  NAND4X0_LVT U670 ( .A1(\PID_int/PID_inter[13] ), .A2(\PID_int/PID_inter[12] ), .A3(\PID_int/PID_inter[11] ), .A4(n534), .Y(n535) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_9  ( .A(\PID_int/N31 ), .B(n99), .CI(\PID_int/add_0_root_add_0_root_add_138_2/carry[9] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[10] ), .S(
+        \PID_int/PID_inter [9]) );
+  AND2X1_LVT U734 ( .A1(n612), .A2(n603), .Y(\PID_int/P_term[10] ) );
+  XOR3X2_LVT U121 ( .A1(n706), .A2(n600), .A3(n603), .Y(\PID_int/P_term[11] )
+         );
+  AO22X1_LVT U805 ( .A1(n644), .A2(n645), .A3(n646), .A4(n110), .Y(n641) );
+  AO21X1_LVT U807 ( .A1(n639), .A2(n137), .A3(net39303), .Y(n642) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_11  ( .A(
+        \PID_int/N33 ), .B(\PID_int/P_term[11] ), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[11] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[12] ), .S(
+        \PID_int/PID_inter[11] ) );
+  NOR2X0_LVT U730 ( .A1(n607), .A2(n606), .Y(n602) );
+  NAND3X0_LVT U735 ( .A1(n614), .A2(n613), .A3(n98), .Y(n603) );
+  NAND2X0_LVT U727 ( .A1(n603), .A2(n706), .Y(n601) );
+  AOI21X1_LVT U729 ( .A1(n606), .A2(n607), .A3(n602), .Y(n600) );
+  NAND2X0_LVT U750 ( .A1(n627), .A2(\PID_int/ptch_err_sat [6]), .Y(n605) );
+  NAND2X0_LVT U728 ( .A1(n605), .A2(n106), .Y(n599) );
+  AO221X1_LVT U726 ( .A1(n599), .A2(\PID_int/ptch_err_sat [8]), .A3(n600), 
+        .A4(n601), .A5(n602), .Y(\PID_int/P_term[12] ) );
+  AO21X1_LVT U804 ( .A1(n639), .A2(n138), .A3(net39303), .Y(n637) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_12  ( .A(
+        \PID_int/N34 ), .B(\PID_int/P_term[12] ), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[12] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[13] ), .S(
+        \PID_int/PID_inter[12] ) );
+  AO21X1_LVT U801 ( .A1(n639), .A2(n146), .A3(net39303), .Y(n579) );
+  OR2X1_LVT U672 ( .A1(n537), .A2(n98), .Y(n539) );
+  FADDX1_LVT \PID_int/add_0_root_add_0_root_add_138_2/U1_13  ( .A(
+        \PID_int/N35 ), .B(n98), .CI(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[13] ), .CO(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[14] ), .S(
+        \PID_int/PID_inter[13] ) );
+  AO22X1_LVT U717 ( .A1(net39733), .A2(n579), .A3(n580), .A4(n110), .Y(n540)
+         );
+  AO22X1_LVT U716 ( .A1(n540), .A2(\PID_int/I_term[14] ), .A3(n110), .A4(n540), 
+        .Y(\PID_int/add_1_root_add_0_root_add_138_2/carry[15] ) );
+  AND2X1_LVT U838 ( .A1(n639), .A2(n149), .Y(\PID_int/I_term[14] ) );
+  AND2X1_LVT U631 ( .A1(net38610), .A2(n180), .Y(n475) );
+  AND2X1_LVT U654 ( .A1(net38621), .A2(n180), .Y(n512) );
+  AND3X1_LVT U798 ( .A1(ptch[11]), .A2(ptch[10]), .A3(ptch[12]), .Y(n635) );
+  NAND4X0_LVT U797 ( .A1(n635), .A2(ptch[13]), .A3(ptch[14]), .A4(ptch[9]), 
+        .Y(n634) );
+  AND2X1_LVT U761 ( .A1(\PID_int/ptch_err_sat [2]), .A2(n596), .Y(n628) );
+  AO21X1_LVT U762 ( .A1(\PID_int/ptch_err_sat [1]), .A2(
+        \PID_int/ptch_err_sat [2]), .A3(n703), .Y(n596) );
+  OA22X1_LVT U760 ( .A1(n596), .A2(\PID_int/ptch_err_sat [2]), .A3(
+        \PID_int/ptch_err_sat [3]), .A4(n628), .Y(n583) );
+  NAND2X0_LVT U758 ( .A1(n583), .A2(\PID_int/ptch_err_sat [3]), .Y(n586) );
+  NAND2X0_LVT U767 ( .A1(\PID_int/ptch_err_sat [4]), .A2(
+        \PID_int/ptch_err_sat [3]), .Y(n582) );
+  NAND2X0_LVT U759 ( .A1(\PID_int/ptch_err_sat [4]), .A2(n583), .Y(n585) );
+  NAND3X0_LVT U757 ( .A1(n585), .A2(n582), .A3(n586), .Y(n594) );
+  NAND2X0_LVT U752 ( .A1(n102), .A2(n592), .Y(n627) );
+  AO22X1_LVT U755 ( .A1(\PID_int/ptch_err_sat [4]), .A2(
+        \PID_int/ptch_err_sat [5]), .A3(n594), .A4(n595), .Y(n591) );
+  NAND2X0_LVT U753 ( .A1(n591), .A2(\PID_int/ptch_err_sat [5]), .Y(n592) );
+  NAND2X0_LVT U745 ( .A1(n592), .A2(n103), .Y(n621) );
+  OA21X1_LVT U739 ( .A1(n617), .A2(n98), .A3(n607), .Y(n616) );
+  NAND2X0_LVT U740 ( .A1(n617), .A2(n98), .Y(n607) );
+  NAND2X0_LVT U743 ( .A1(n106), .A2(n107), .Y(n610) );
+  OA221X1_LVT U741 ( .A1(n107), .A2(n618), .A3(n610), .A4(n619), .A5(n620), 
+        .Y(n617) );
+  AO21X1_LVT U843 ( .A1(ptch[0]), .A2(n623), .A3(n624), .Y(
+        \PID_int/ptch_err_sat [0]) );
+  NOR2X1_LVT U844 ( .A1(n389), .A2(net39349), .Y(n223) );
+  NOR2X2_LVT U845 ( .A1(n389), .A2(net39349), .Y(net39351) );
+  INVX1_LVT U846 ( .A(n389), .Y(n97) );
+  AO21X1_LVT U847 ( .A1(n254), .A2(n250), .A3(n13), .Y(n830) );
+  AO21X1_LVT U848 ( .A1(n254), .A2(n255), .A3(n13), .Y(n831) );
+  AO21X1_LVT U849 ( .A1(n254), .A2(n257), .A3(n13), .Y(n832) );
+  AO21X1_LVT U850 ( .A1(n254), .A2(n259), .A3(n13), .Y(n833) );
+  AOI221X1_LVT U851 ( .A1(n159), .A2(n312), .A3(n21), .A4(n259), .A5(n22), .Y(
+        n698) );
+  AND3X2_LVT U852 ( .A1(net39551), .A2(net39552), .A3(n232), .Y(n802) );
+  NAND3X1_LVT U853 ( .A1(net38610), .A2(net39915), .A3(n512), .Y(n508) );
+  NBUFFX2_LVT U854 ( .A(n223), .Y(n699) );
+  DELLN2X2_LVT U855 ( .A(\segwayMath_int/sub_51/carry[3] ), .Y(n700) );
+  IBUFFX4_LVT U856 ( .A(\segwayMath_int/sub_51/carry[7] ), .Y(n701) );
+  INVX1_LVT U857 ( .A(n701), .Y(n702) );
+  INVX1_LVT U858 ( .A(\PID_int/ptch_err_sat [8]), .Y(n107) );
+  XOR2X1_LVT U859 ( .A1(n619), .A2(n106), .Y(n618) );
+  AO21X1_LVT U860 ( .A1(n621), .A2(\PID_int/ptch_err_sat [7]), .A3(n622), .Y(
+        n619) );
+  INVX0_LVT U861 ( .A(\PID_int/ptch_err_sat [7]), .Y(n106) );
+  NAND3X2_LVT U862 ( .A1(\PID_int/ptch_err_sat [7]), .A2(n107), .A3(n619), .Y(
+        n620) );
+  AO21X2_LVT U863 ( .A1(ptch[7]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [7]) );
+  INVX1_LVT U864 ( .A(\PID_int/ptch_err_sat [6]), .Y(n103) );
+  OA21X2_LVT U865 ( .A1(n591), .A2(\PID_int/ptch_err_sat [5]), .A3(
+        \PID_int/ptch_err_sat [6]), .Y(n622) );
+  AO21X2_LVT U866 ( .A1(ptch[5]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [5]) );
+  OAI21X1_LVT U867 ( .A1(net39860), .A2(\PID_int/ptch_err_sat [5]), .A3(n592), 
+        .Y(n589) );
+  AO21X2_LVT U868 ( .A1(ptch[4]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [4]) );
+  OR2X1_LVT U869 ( .A1(\PID_int/ptch_err_sat [4]), .A2(
+        \PID_int/ptch_err_sat [5]), .Y(n595) );
+  DELLN2X2_LVT U870 ( .A(n591), .Y(net39860) );
+  DELLN2X2_LVT U871 ( .A(n594), .Y(net39901) );
+  OA222X1_LVT U872 ( .A1(n582), .A2(n583), .A3(n584), .A4(
+        \PID_int/ptch_err_sat [4]), .A5(n585), .A6(\PID_int/ptch_err_sat [3]), 
+        .Y(n530) );
+  AO21X2_LVT U873 ( .A1(ptch[2]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [2]) );
+  AO21X2_LVT U874 ( .A1(ptch[3]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [3]) );
+  OA21X2_LVT U875 ( .A1(n583), .A2(\PID_int/ptch_err_sat [3]), .A3(n586), .Y(
+        n584) );
+  OA21X2_LVT U876 ( .A1(ptch[1]), .A2(n624), .A3(n623), .Y(
+        \PID_int/ptch_err_sat [1]) );
+  AND2X1_LVT U877 ( .A1(\PID_int/ptch_err_sat [1]), .A2(
+        \PID_int/ptch_err_sat [0]), .Y(n703) );
+  IBUFFX2_LVT U878 ( .A(n596), .Y(net39615) );
+  NAND2X2_LVT U879 ( .A1(ptch[15]), .A2(n634), .Y(n623) );
+  AND2X1_LVT U880 ( .A1(n632), .A2(n108), .Y(n624) );
+  AO21X1_LVT U881 ( .A1(n529), .A2(n222), .A3(n223), .Y(n180) );
+  XOR3X1_LVT U882 ( .A1(\PID_int/add_0_root_add_0_root_add_138_2/carry[6] ), 
+        .A2(n530), .A3(n531), .Y(n529) );
+  NAND2X0_LVT U883 ( .A1(n389), .A2(n535), .Y(n222) );
+  XOR3X2_LVT U884 ( .A1(n98), .A2(n704), .A3(n705), .Y(n389) );
+  NOR2X0_LVT U885 ( .A1(n534), .A2(n710), .Y(net39349) );
+  IBUFFX16_LVT U886 ( .A(n536), .Y(n98) );
+  XOR3X2_LVT U887 ( .A1(n110), .A2(\PID_int/I_term[14] ), .A3(
+        \PID_int/add_1_root_add_0_root_add_138_2/carry[15] ), .Y(n704) );
+  INVX1_LVT U888 ( .A(ptch_rt[15]), .Y(n110) );
+  AO22X1_LVT U889 ( .A1(n98), .A2(n537), .A3(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[14] ), .A4(n539), .Y(
+        n705) );
+  XOR3X2_LVT U890 ( .A1(net40570), .A2(ptch_rt[15]), .A3(net39728), .Y(n537)
+         );
+  XNOR3X1_LVT U891 ( .A1(n579), .A2(ptch_rt[15]), .A3(net39733), .Y(
+        \PID_int/N35 ) );
+  AO22X1_LVT U892 ( .A1(net39502), .A2(n637), .A3(n638), .A4(n110), .Y(
+        net39733) );
+  XNOR3X1_LVT U893 ( .A1(n637), .A2(ptch_rt[15]), .A3(net39502), .Y(
+        \PID_int/N34 ) );
+  AO22X1_LVT U894 ( .A1(n641), .A2(n642), .A3(n643), .A4(n110), .Y(net39502)
+         );
+  AO21X2_LVT U895 ( .A1(ptch[8]), .A2(net39742), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [8]) );
+  NAND3X2_LVT U896 ( .A1(n616), .A2(n98), .A3(n99), .Y(n706) );
+  XNOR3X1_LVT U897 ( .A1(n642), .A2(ptch_rt[15]), .A3(n641), .Y(\PID_int/N33 )
+         );
+  NAND3X0_LVT U898 ( .A1(n707), .A2(n709), .A3(n708), .Y(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[11] ) );
+  NAND2X0_LVT U899 ( .A1(\PID_int/N32 ), .A2(\PID_int/P_term[10] ), .Y(n707)
+         );
+  XNOR3X1_LVT U900 ( .A1(n645), .A2(ptch_rt[15]), .A3(n644), .Y(\PID_int/N32 )
+         );
+  NAND2X0_LVT U901 ( .A1(\PID_int/add_0_root_add_0_root_add_138_2/carry[10] ), 
+        .A2(\PID_int/N32 ), .Y(n709) );
+  NAND2X0_LVT U902 ( .A1(\PID_int/add_0_root_add_0_root_add_138_2/carry[10] ), 
+        .A2(\PID_int/P_term[10] ), .Y(n708) );
+  XOR3X2_LVT U903 ( .A1(n537), .A2(net39813), .A3(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[14] ), .Y(n534) );
+  OR2X1_LVT U904 ( .A1(\PID_int/PID_inter[13] ), .A2(n711), .Y(n710) );
+  OR2X1_LVT U905 ( .A1(\PID_int/PID_inter[12] ), .A2(\PID_int/PID_inter[11] ), 
+        .Y(n711) );
+  AO21X1_LVT U906 ( .A1(n98), .A2(n613), .A3(n614), .Y(n612) );
+  IBUFFX2_LVT U907 ( .A(\PID_int/P_term[10] ), .Y(net39660) );
+  INVX1_LVT U908 ( .A(n613), .Y(n99) );
+  INVX1_LVT U909 ( .A(\segwayMath_int/steer_control_div[6] ), .Y(n122) );
+  INVX1_LVT U910 ( .A(\segwayMath_int/steer_control_div[5] ), .Y(n123) );
+  INVX1_LVT U911 ( .A(\segwayMath_int/steer_control_div[4] ), .Y(n124) );
+  NAND3X0_LVT U912 ( .A1(n714), .A2(n715), .A3(n713), .Y(
+        \segwayMath_int/sub_51/carry[4] ) );
+  NAND2X0_LVT U913 ( .A1(n125), .A2(\segwayMath_int/sub_51/carry[3] ), .Y(n714) );
+  INVX1_LVT U914 ( .A(\segwayMath_int/steer_control_div[3] ), .Y(n125) );
+  NAND2X0_LVT U915 ( .A1(n125), .A2(\segwayMath_int/PID_SS_inter [11]), .Y(
+        n715) );
+  NAND2X0_LVT U916 ( .A1(\segwayMath_int/PID_SS_inter [11]), .A2(
+        \segwayMath_int/sub_51/carry[3] ), .Y(n713) );
+  NAND2X0_LVT U917 ( .A1(\segwayMath_int/PID_SS_inter [15]), .A2(
+        \segwayMath_int/sub_51/carry[7] ), .Y(net39358) );
+  NAND2X0_LVT U918 ( .A1(\segwayMath_int/sub_51/carry[7] ), .A2(n120), .Y(
+        net39359) );
+  XOR3X2_LVT U919 ( .A1(\segwayMath_int/PID_SS_inter [15]), .A2(n120), .A3(
+        n702), .Y(\segwayMath_int/rght_steer_cntrl [7]) );
+  OA21X2_LVT U920 ( .A1(n351), .A2(net39453), .A3(net39497), .Y(
+        \segwayMath_int/PID_SS_inter [10]) );
+  INVX1_LVT U921 ( .A(\segwayMath_int/steer_control_div[2] ), .Y(n126) );
+  INVX1_LVT U922 ( .A(\segwayMath_int/steer_control_div[1] ), .Y(n127) );
+  AOI21X2_LVT U923 ( .A1(n362), .A2(n363), .A3(n352), .Y(net39526) );
+  XOR3X2_LVT U924 ( .A1(\segwayMath_int/PID_SS_inter [11]), .A2(n125), .A3(
+        n700), .Y(\segwayMath_int/rght_steer_cntrl [3]) );
+  AO22X1_LVT U925 ( .A1(\segwayMath_int/rght_steer_cntrl[2] ), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [10]), .A4(net38608), .Y(n255) );
+  XNOR2X2_LVT U926 ( .A1(n430), .A2(\segwayMath_int/mult_35/CARRYB[7][1] ), 
+        .Y(n362) );
+  XOR2X1_LVT U927 ( .A1(net39526), .A2(net39413), .Y(
+        \segwayMath_int/lft_steer_cntrl[1] ) );
+  NAND2X0_LVT U928 ( .A1(n351), .A2(n352), .Y(net39497) );
+  XOR3X2_LVT U929 ( .A1(n717), .A2(\segwayMath_int/mult_35/CARRYB[6][2] ), 
+        .A3(n59), .Y(n430) );
+  NOR2X0_LVT U930 ( .A1(n363), .A2(n362), .Y(net39453) );
+  AOI21X1_LVT U931 ( .A1(n362), .A2(n363), .A3(net39453), .Y(
+        \segwayMath_int/mult_35/A1[7] ) );
+  INVX1_LVT U932 ( .A(n438), .Y(n717) );
+  INVX0_LVT U933 ( .A(n437), .Y(n59) );
+  NAND4X0_LVT U934 ( .A1(n425), .A2(net39788), .A3(n430), .A4(
+        \segwayMath_int/mult_35/CARRYB[7][1] ), .Y(n370) );
+  NAND3X2_LVT U935 ( .A1(net39791), .A2(n430), .A3(
+        \segwayMath_int/mult_35/CARRYB[7][1] ), .Y(net39322) );
+  XOR3X2_LVT U936 ( .A1(n439), .A2(n719), .A3(n441), .Y(n437) );
+  INVX0_LVT U937 ( .A(n189), .Y(n716) );
+  INVX1_LVT U938 ( .A(n440), .Y(n719) );
+  XOR3X2_LVT U939 ( .A1(n465), .A2(n487), .A3(n466), .Y(n441) );
+  AO22X1_LVT U940 ( .A1(n716), .A2(n187), .A3(n452), .A4(n188), .Y(net39781)
+         );
+  XOR3X2_LVT U941 ( .A1(n462), .A2(n718), .A3(n464), .Y(n189) );
+  INVX1_LVT U942 ( .A(n463), .Y(n718) );
+  XNOR3X1_LVT U943 ( .A1(n187), .A2(n188), .A3(n189), .Y(
+        \segwayMath_int/mult_35/SUMB[5][3] ) );
+  AO221X1_LVT U944 ( .A1(n712), .A2(n76), .A3(n477), .A4(n89), .A5(n478), .Y(
+        net38706) );
+  AO221X1_LVT U945 ( .A1(n712), .A2(n76), .A3(n477), .A4(n89), .A5(n478), .Y(
+        n461) );
+  XOR2X1_LVT U946 ( .A1(n479), .A2(n77), .Y(n712) );
+  INVX0_LVT U947 ( .A(n480), .Y(n76) );
+  IBUFFX4_LVT U948 ( .A(n479), .Y(n89) );
+  AND3X4_LVT U949 ( .A1(n479), .A2(n77), .A3(n480), .Y(n478) );
+  INVX0_LVT U950 ( .A(n481), .Y(n77) );
+  NBUFFX2_LVT U951 ( .A(n841), .Y(net38610) );
+  AO21X1_LVT U952 ( .A1(\PID_int/PID_inter [7]), .A2(n222), .A3(net39351), .Y(
+        n179) );
+  OA22X2_LVT U953 ( .A1(n480), .A2(n481), .A3(n477), .A4(n479), .Y(n507) );
+  INVX1_LVT U954 ( .A(net38615), .Y(net38621) );
+  IBUFFX16_LVT U955 ( .A(n728), .Y(net40564) );
+  AND2X1_LVT U956 ( .A1(n153), .A2(n152), .Y(n728) );
+  NAND3X0_LVT U957 ( .A1(n729), .A2(n730), .A3(n155), .Y(n153) );
+  AND2X1_LVT U958 ( .A1(n154), .A2(n724), .Y(n729) );
+  INVX0_LVT U959 ( .A(n295), .Y(n58) );
+  INVX0_LVT U960 ( .A(n294), .Y(n55) );
+  INVX0_LVT U961 ( .A(n312), .Y(n44) );
+  INVX0_LVT U962 ( .A(n293), .Y(n51) );
+  INVX0_LVT U963 ( .A(n304), .Y(n41) );
+  NAND2X0_LVT U964 ( .A1(n301), .A2(n326), .Y(n159) );
+  AO221X1_LVT U965 ( .A1(net39802), .A2(n317), .A3(n21), .A4(n293), .A5(n318), 
+        .Y(n821) );
+  INVX1_LVT U966 ( .A(n259), .Y(n62) );
+  INVX0_LVT U967 ( .A(n820), .Y(n724) );
+  AND4X1_LVT U968 ( .A1(net39944), .A2(n298), .A3(net39945), .A4(n311), .Y(
+        n820) );
+  OR4X1_LVT U969 ( .A1(net38759), .A2(n22), .A3(net38760), .A4(net38758), .Y(
+        n730) );
+  AND3X1_LVT U970 ( .A1(n26), .A2(n31), .A3(net39802), .Y(net38759) );
+  INVX1_LVT U971 ( .A(n298), .Y(n22) );
+  AND2X1_LVT U972 ( .A1(n305), .A2(n306), .Y(net38760) );
+  INVX1_LVT U973 ( .A(n300), .Y(net38758) );
+  AO221X1_LVT U974 ( .A1(n320), .A2(n321), .A3(n21), .A4(n160), .A5(n322), .Y(
+        n818) );
+  NBUFFX2_LVT U975 ( .A(n156), .Y(net39905) );
+  NAND4X0_LVT U976 ( .A1(n162), .A2(net38772), .A3(net40593), .A4(n723), .Y(
+        n152) );
+  OR4X1_LVT U977 ( .A1(n255), .A2(n257), .A3(n259), .A4(n827), .Y(n164) );
+  AO221X1_LVT U978 ( .A1(n10), .A2(n249), .A3(n12), .A4(n250), .A5(n251), .Y(
+        n827) );
+  OR4X1_LVT U979 ( .A1(n828), .A2(n731), .A3(n829), .A4(n830), .Y(n163) );
+  NAND3X0_LVT U980 ( .A1(net39551), .A2(net39552), .A3(n232), .Y(n731) );
+  NAND2X0_LVT U981 ( .A1(n254), .A2(n256), .Y(net39551) );
+  NAND2X0_LVT U982 ( .A1(n12), .A2(n257), .Y(net39552) );
+  NAND3X0_LVT U983 ( .A1(n266), .A2(net40593), .A3(pwr_up), .Y(n232) );
+  INVX0_LVT U984 ( .A(net39560), .Y(n825) );
+  AND4X1_LVT U985 ( .A1(n233), .A2(n232), .A3(n231), .A4(n234), .Y(net39560)
+         );
+  NBUFFX8_LVT U986 ( .A(n826), .Y(net38772) );
+  NAND2X0_LVT U987 ( .A1(net38590), .A2(n276), .Y(net40593) );
+  INVX0_LVT U988 ( .A(n824), .Y(n723) );
+  AOI221X1_LVT U989 ( .A1(n260), .A2(n261), .A3(n12), .A4(n253), .A5(n262), 
+        .Y(n824) );
+  INVX0_LVT U990 ( .A(n253), .Y(n38) );
+  NAND2X0_LVT U991 ( .A1(n265), .A2(n235), .Y(n254) );
+  INVX0_LVT U992 ( .A(n237), .Y(n12) );
+  INVX1_LVT U993 ( .A(n232), .Y(n13) );
+  NBUFFX8_LVT U994 ( .A(n828), .Y(net38754) );
+  NAND2X0_LVT U995 ( .A1(net39681), .A2(n263), .Y(n235) );
+  AND2X1_LVT U996 ( .A1(net39604), .A2(n268), .Y(net39745) );
+  AND2X1_LVT U997 ( .A1(net38590), .A2(n269), .Y(net39604) );
+  AO21X1_LVT U998 ( .A1(\segwayMath_int/rght_steer_cntrl[12] ), .A2(en_steer), 
+        .A3(n292), .Y(n268) );
+  OR2X2_LVT U999 ( .A1(n161), .A2(n266), .Y(n263) );
+  INVX0_LVT U1000 ( .A(n265), .Y(n10) );
+  INVX1_LVT U1001 ( .A(net38594), .Y(net38590) );
+  NAND3X2_LVT U1002 ( .A1(pwr_up), .A2(n263), .A3(n732), .Y(n237) );
+  NAND2X0_LVT U1003 ( .A1(net39681), .A2(n263), .Y(net39746) );
+  XNOR2X1_LVT U1004 ( .A1(n722), .A2(net38721), .Y(n277) );
+  AOI22X1_LVT U1005 ( .A1(n290), .A2(n273), .A3(n720), .A4(n291), .Y(n722) );
+  AOI21X2_LVT U1006 ( .A1(\segwayMath_int/rght_steer_cntrl[12] ), .A2(en_steer), .A3(n292), .Y(net38734) );
+  AO21X1_LVT U1007 ( .A1(\segwayMath_int/rght_steer_cntrl[11] ), .A2(en_steer), 
+        .A3(n292), .Y(n273) );
+  INVX0_LVT U1008 ( .A(n273), .Y(n720) );
+  OA21X2_LVT U1009 ( .A1(n240), .A2(n36), .A3(net38735), .Y(n274) );
+  AOI21X2_LVT U1010 ( .A1(\segwayMath_int/rght_steer_cntrl[12] ), .A2(en_steer), .A3(n292), .Y(net38721) );
+  AND4X1_LVT U1011 ( .A1(n281), .A2(n279), .A3(n280), .A4(n278), .Y(n732) );
+  AOI221X1_LVT U1012 ( .A1(\segwayMath_int/add_83/carry[12] ), .A2(n268), .A3(
+        net38721), .A4(n273), .A5(n282), .Y(n281) );
+  NAND3X0_LVT U1013 ( .A1(net39729), .A2(net39730), .A3(net39731), .Y(n280) );
+  AOI22X1_LVT U1014 ( .A1(\segwayMath_int/rght_steer_cntrl[10] ), .A2(en_steer), .A3(\segwayMath_int/PID_SS_inter [18]), .A4(net38608), .Y(net38737) );
+  INVX1_LVT U1015 ( .A(n239), .Y(n36) );
+  INVX0_LVT U1016 ( .A(n246), .Y(n37) );
+  INVX0_LVT U1017 ( .A(n252), .Y(n16) );
+  INVX0_LVT U1018 ( .A(n256), .Y(n40) );
+  INVX0_LVT U1019 ( .A(n258), .Y(n43) );
+  INVX0_LVT U1020 ( .A(n250), .Y(n50) );
+  INVX0_LVT U1021 ( .A(n255), .Y(n54) );
+  INVX0_LVT U1022 ( .A(n257), .Y(n57) );
+  AOI21X1_LVT U1023 ( .A1(en_steer), .A2(\segwayMath_int/rght_steer_cntrl[11] ), .A3(n292), .Y(n721) );
+  XOR3X2_LVT U1024 ( .A1(net39232), .A2(n374), .A3(n97), .Y(
+        \segwayMath_int/PID_SS_inter [19]) );
+  AO21X2_LVT U1025 ( .A1(n176), .A2(steer_pot[10]), .A3(steer_pot[11]), .Y(
+        n697) );
+  XNOR2X1_LVT U1026 ( .A1(net39292), .A2(n375), .Y(
+        \segwayMath_int/PID_SS_inter [18]) );
+  XNOR2X1_LVT U1027 ( .A1(net39294), .A2(n382), .Y(
+        \segwayMath_int/PID_SS_inter [17]) );
+  NAND3X0_LVT U1028 ( .A1(n726), .A2(n725), .A3(n727), .Y(
+        \segwayMath_int/sub_51/carry[9] ) );
+  NAND2X0_LVT U1029 ( .A1(\segwayMath_int/PID_SS_inter [16]), .A2(
+        \segwayMath_int/sub_51/carry[8] ), .Y(n726) );
+  XNOR2X1_LVT U1030 ( .A1(n390), .A2(n391), .Y(
+        \segwayMath_int/PID_SS_inter [16]) );
+  NAND3X0_LVT U1031 ( .A1(net39358), .A2(net39357), .A3(net39359), .Y(
+        \segwayMath_int/sub_51/carry[8] ) );
+  NAND2X0_LVT U1032 ( .A1(\segwayMath_int/PID_SS_inter [16]), .A2(n119), .Y(
+        n725) );
+  INVX1_LVT U1033 ( .A(\segwayMath_int/steer_control_div[8] ), .Y(n119) );
+  NAND2X0_LVT U1034 ( .A1(n119), .A2(\segwayMath_int/sub_51/carry[8] ), .Y(
+        n727) );
+  NAND2X0_LVT U1035 ( .A1(\segwayMath_int/PID_SS_inter [15]), .A2(n120), .Y(
+        net39357) );
+  INVX1_LVT U1036 ( .A(\segwayMath_int/steer_control_div[7] ), .Y(n120) );
+  NBUFFX2_LVT U1037 ( .A(\segwayMath_int/sub_51/carry[8] ), .Y(net39896) );
+  IBUFFX4_LVT U1038 ( .A(n425), .Y(n56) );
+  NAND2X2_LVT U1039 ( .A1(n432), .A2(n431), .Y(n425) );
+  IBUFFX8_LVT U1040 ( .A(net40593), .Y(net40550) );
+  AO21X2_LVT U1041 ( .A1(n236), .A2(n11), .A3(n13), .Y(n262) );
+  NOR2X1_LVT U1042 ( .A1(n97), .A2(n817), .Y(
+        \segwayMath_int/mult_35/ab[2][11] ) );
+  INVX1_LVT U1043 ( .A(n487), .Y(n60) );
+  NOR2X1_LVT U1044 ( .A1(n97), .A2(net38650), .Y(
+        \segwayMath_int/mult_35/ab[3][11] ) );
+  INVX1_LVT U1045 ( .A(n536), .Y(net39813) );
+  INVX1_LVT U1046 ( .A(n449), .Y(n763) );
+  XOR2X1_LVT U1047 ( .A1(\segwayMath_int/mult_35/CARRYB[7][5] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][6] ), .Y(n414) );
+  INVX1_LVT U1048 ( .A(n399), .Y(n68) );
+  INVX1_LVT U1049 ( .A(\segwayMath_int/N42 ), .Y(n780) );
+  INVX1_LVT U1050 ( .A(\segwayMath_int/N41 ), .Y(n781) );
+  INVX1_LVT U1051 ( .A(\segwayMath_int/N40 ), .Y(n779) );
+  AND3X1_LVT U1052 ( .A1(net38628), .A2(net39915), .A3(n528), .Y(n521) );
+  XNOR2X1_LVT U1053 ( .A1(n519), .A2(n220), .Y(n502) );
+  INVX1_LVT U1054 ( .A(n664), .Y(n768) );
+  XNOR3X1_LVT U1055 ( .A1(n501), .A2(n503), .A3(n502), .Y(n499) );
+  INVX1_LVT U1056 ( .A(n654), .Y(n766) );
+  XNOR2X1_LVT U1057 ( .A1(n608), .A2(n107), .Y(n606) );
+  NOR2X1_LVT U1058 ( .A1(n97), .A2(net38655), .Y(
+        \segwayMath_int/mult_35/ab[4][11] ) );
+  AO21X1_LVT U1059 ( .A1(\PID_int/PID_inter [9]), .A2(n785), .A3(net39351), 
+        .Y(n177) );
+  INVX1_LVT U1060 ( .A(n457), .Y(net39916) );
+  INVX1_LVT U1061 ( .A(n210), .Y(n756) );
+  INVX1_LVT U1062 ( .A(\PID_int/I_term[14] ), .Y(net40570) );
+  INVX1_LVT U1063 ( .A(n434), .Y(n775) );
+  XOR2X1_LVT U1064 ( .A1(\segwayMath_int/mult_35/CARRYB[7][7] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][8] ), .Y(n402) );
+  XOR2X1_LVT U1065 ( .A1(\segwayMath_int/mult_35/CARRYB[7][6] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][7] ), .Y(n411) );
+  NAND4X0_LVT U1066 ( .A1(n256), .A2(n258), .A3(n250), .A4(n255), .Y(n283) );
+  INVX1_LVT U1067 ( .A(\segwayMath_int/mult_35/CARRYB[7][10] ), .Y(n94) );
+  INVX1_LVT U1068 ( .A(n350), .Y(n45) );
+  NAND2X0_LVT U1069 ( .A1(\segwayMath_int/PID_SS_inter [13]), .A2(
+        \segwayMath_int/steer_control_div[5] ), .Y(n790) );
+  OR2X1_LVT U1070 ( .A1(n336), .A2(n753), .Y(n333) );
+  XOR3X1_LVT U1071 ( .A1(\segwayMath_int/PID_SS_inter [13]), .A2(
+        \segwayMath_int/steer_control_div[5] ), .A3(n797), .Y(
+        \segwayMath_int/lft_steer_cntrl [5]) );
+  NAND3X0_LVT U1072 ( .A1(\PID_int/n15 ), .A2(n536), .A3(
+        \PID_int/ptch_err_sat_SEA [17]), .Y(n630) );
+  INVX8_LVT U1073 ( .A(n802), .Y(rght_spd[5]) );
+  IBUFFX8_LVT U1074 ( .A(net39560), .Y(net39682) );
+  INVX8_LVT U1075 ( .A(n824), .Y(net39332) );
+  INVX8_LVT U1076 ( .A(n822), .Y(lft_spd[6]) );
+  INVX8_LVT U1077 ( .A(n819), .Y(lft_spd[9]) );
+  INVX8_LVT U1078 ( .A(net39905), .Y(lft_spd[11]) );
+  NAND4X0_LVT U1079 ( .A1(n243), .A2(n232), .A3(n242), .A4(n244), .Y(n826) );
+  INVX0_LVT U1080 ( .A(net39746), .Y(n11) );
+  INVX0_LVT U1081 ( .A(n248), .Y(n18) );
+  OA22X1_LVT U1082 ( .A1(n43), .A2(n237), .A3(n241), .A4(n235), .Y(n244) );
+  AND2X1_LVT U1083 ( .A1(net39604), .A2(net38721), .Y(net39681) );
+  OAI21X1_LVT U1084 ( .A1(n249), .A2(net39746), .A3(n232), .Y(n251) );
+  OA22X2_LVT U1085 ( .A1(net39746), .A2(n236), .A3(n40), .A4(n237), .Y(n234)
+         );
+  AND2X1_LVT U1086 ( .A1(n632), .A2(n108), .Y(net39492) );
+  DELLN2X2_LVT U1087 ( .A(n821), .Y(net40638) );
+  NAND3X2_LVT U1088 ( .A1(n17), .A2(n36), .A3(n10), .Y(n231) );
+  NAND3X1_LVT U1089 ( .A1(net38737), .A2(n36), .A3(net38721), .Y(n287) );
+  AOI21X1_LVT U1090 ( .A1(n159), .A2(n259), .A3(n22), .Y(n733) );
+  AOI21X1_LVT U1091 ( .A1(n159), .A2(n295), .A3(n22), .Y(n734) );
+  AOI21X1_LVT U1092 ( .A1(n159), .A2(n294), .A3(n22), .Y(n735) );
+  AOI21X1_LVT U1093 ( .A1(n159), .A2(n293), .A3(n22), .Y(n736) );
+  INVX2_LVT U1094 ( .A(n697), .Y(n121) );
+  INVX1_LVT U1095 ( .A(rst_n), .Y(n738) );
+  INVX1_LVT U1096 ( .A(n738), .Y(n739) );
+  INVX1_LVT U1097 ( .A(n738), .Y(n740) );
+  INVX8_LVT U1098 ( .A(n698), .Y(lft_spd[4]) );
+  INVX8_LVT U1099 ( .A(n733), .Y(lft_spd[0]) );
+  INVX8_LVT U1100 ( .A(n734), .Y(lft_spd[1]) );
+  INVX8_LVT U1101 ( .A(n735), .Y(lft_spd[2]) );
+  INVX8_LVT U1102 ( .A(n736), .Y(lft_spd[3]) );
+  INVX1_LVT U1103 ( .A(n833), .Y(n746) );
+  INVX8_LVT U1104 ( .A(n746), .Y(rght_spd[0]) );
+  INVX1_LVT U1105 ( .A(n832), .Y(n748) );
+  INVX8_LVT U1106 ( .A(n748), .Y(rght_spd[1]) );
+  INVX1_LVT U1107 ( .A(n831), .Y(n750) );
+  INVX8_LVT U1108 ( .A(n750), .Y(rght_spd[2]) );
+  AO21X1_LVT U1109 ( .A1(en_steer), .A2(\segwayMath_int/lft_steer_cntrl [11]), 
+        .A3(n292), .Y(n339) );
+  NAND3X2_LVT U1110 ( .A1(n27), .A2(n32), .A3(net39802), .Y(net39944) );
+  NAND2X0_LVT U1111 ( .A1(n313), .A2(n314), .Y(net39945) );
+  OA22X2_LVT U1112 ( .A1(n44), .A2(n303), .A3(n307), .A4(n301), .Y(n311) );
+  AO21X2_LVT U1113 ( .A1(\PID_int/PID_inter [8]), .A2(n785), .A3(n223), .Y(
+        n178) );
+  XOR3X2_LVT U1114 ( .A1(n190), .A2(n191), .A3(net39784), .Y(
+        \segwayMath_int/mult_35/SUMB[4][3] ) );
+  INVX1_LVT U1115 ( .A(n339), .Y(n753) );
+  AND4X1_LVT U1116 ( .A1(n782), .A2(n779), .A3(n780), .A4(n781), .Y(n754) );
+  NAND2X4_LVT U1117 ( .A1(n389), .A2(n535), .Y(n785) );
+  XOR3X2_LVT U1118 ( .A1(n456), .A2(net39916), .A3(n458), .Y(n193) );
+  AO21X1_LVT U1119 ( .A1(\PID_int/PID_inter [7]), .A2(n222), .A3(net39351), 
+        .Y(net39915) );
+  AND2X1_LVT U1120 ( .A1(n330), .A2(n774), .Y(n771) );
+  XOR3X2_LVT U1121 ( .A1(n498), .A2(n88), .A3(n90), .Y(n493) );
+  INVX1_LVT U1122 ( .A(n330), .Y(n755) );
+  XOR3X2_LVT U1123 ( .A1(n209), .A2(n211), .A3(n756), .Y(n205) );
+  DELLN1X2_LVT U1124 ( .A(\segwayMath_int/add_49/carry[6] ), .Y(n757) );
+  OR2X1_LVT U1125 ( .A1(n637), .A2(n758), .Y(n638) );
+  AO22X1_LVT U1126 ( .A1(n641), .A2(n642), .A3(n643), .A4(n110), .Y(n758) );
+  NAND2X0_LVT U1127 ( .A1(\PID_int/ptch_err_sat [1]), .A2(
+        \PID_int/ptch_err_sat [0]), .Y(n759) );
+  AO21X2_LVT U1128 ( .A1(n442), .A2(n785), .A3(n699), .Y(n185) );
+  INVX1_LVT U1129 ( .A(n491), .Y(n67) );
+  AND2X1_LVT U1130 ( .A1(n770), .A2(n771), .Y(net39802) );
+  AND2X1_LVT U1131 ( .A1(net39788), .A2(n425), .Y(net39791) );
+  NAND2X0_LVT U1132 ( .A1(net39786), .A2(n760), .Y(net39788) );
+  INVX0_LVT U1133 ( .A(n431), .Y(net39786) );
+  INVX0_LVT U1134 ( .A(n432), .Y(n760) );
+  XOR3X2_LVT U1135 ( .A1(n459), .A2(n460), .A3(net38706), .Y(net39784) );
+  OR2X2_LVT U1136 ( .A1(n761), .A2(n762), .Y(n301) );
+  NAND2X0_LVT U1137 ( .A1(n755), .A2(n774), .Y(n761) );
+  AND2X1_LVT U1138 ( .A1(n328), .A2(n776), .Y(n762) );
+  XOR3X2_LVT U1139 ( .A1(n448), .A2(n763), .A3(n450), .Y(n435) );
+  XNOR2X1_LVT U1140 ( .A1(n203), .A2(n204), .Y(
+        \segwayMath_int/mult_35/SUMB[1][10] ) );
+  AOI21X1_LVT U1141 ( .A1(net39497), .A2(net39322), .A3(n369), .Y(n365) );
+  OAI222X1_LVT U1142 ( .A1(n340), .A2(n330), .A3(n342), .A4(n341), .A5(n755), 
+        .A6(n754), .Y(n764) );
+  NAND3X0_LVT U1143 ( .A1(net38622), .A2(n181), .A3(n475), .Y(net39751) );
+  NBUFFX8_LVT U1144 ( .A(n818), .Y(net39752) );
+  IBUFFX4_LVT U1145 ( .A(n623), .Y(net39741) );
+  INVX1_LVT U1146 ( .A(net39741), .Y(net39742) );
+  OR4X2_LVT U1147 ( .A1(ptch[10]), .A2(ptch[12]), .A3(ptch[11]), .A4(n633), 
+        .Y(n632) );
+  AO22X1_LVT U1148 ( .A1(net39733), .A2(n579), .A3(n580), .A4(n110), .Y(
+        net39728) );
+  NAND2X0_LVT U1149 ( .A1(net38721), .A2(n283), .Y(net39729) );
+  NAND2X0_LVT U1150 ( .A1(n62), .A2(n284), .Y(net39730) );
+  NAND2X0_LVT U1151 ( .A1(n285), .A2(n268), .Y(net39731) );
+  AO22X1_LVT U1152 ( .A1(n660), .A2(n661), .A3(n662), .A4(n115), .Y(n765) );
+  NAND2X0_LVT U1153 ( .A1(n766), .A2(n767), .Y(n655) );
+  AOI22X1_LVT U1154 ( .A1(n588), .A2(n587), .A3(n656), .A4(n113), .Y(n767) );
+  NAND2X0_LVT U1155 ( .A1(n768), .A2(n769), .Y(n665) );
+  AOI22X1_LVT U1156 ( .A1(n444), .A2(n443), .A3(n666), .A4(n117), .Y(n769) );
+  NAND2X0_LVT U1157 ( .A1(n776), .A2(n328), .Y(n770) );
+  NAND2X0_LVT U1158 ( .A1(n770), .A2(n771), .Y(n326) );
+  AO21X1_LVT U1159 ( .A1(\PID_int/PID_inter [5]), .A2(n785), .A3(net39351), 
+        .Y(n181) );
+  XOR3X2_LVT U1160 ( .A1(\segwayMath_int/PID_SS_inter [19]), .A2(n121), .A3(
+        \segwayMath_int/add_49/carry[12] ), .Y(n371) );
+  AO21X2_LVT U1161 ( .A1(n529), .A2(n222), .A3(n699), .Y(n772) );
+  INVX1_LVT U1162 ( .A(net39660), .Y(net39661) );
+  AO21X2_LVT U1163 ( .A1(net39742), .A2(n109), .A3(net39492), .Y(n536) );
+  INVX0_LVT U1164 ( .A(ptch_rt[6]), .Y(n773) );
+  INVX0_LVT U1165 ( .A(ptch_rt[6]), .Y(n118) );
+  AND2X1_LVT U1166 ( .A1(pwr_up), .A2(n778), .Y(n774) );
+  AO21X2_LVT U1167 ( .A1(n226), .A2(n785), .A3(n699), .Y(n184) );
+  AO21X2_LVT U1168 ( .A1(n221), .A2(n785), .A3(net39351), .Y(n182) );
+  AO21X2_LVT U1169 ( .A1(\PID_int/PID_inter [3]), .A2(n785), .A3(net39351), 
+        .Y(n186) );
+  INVX1_LVT U1170 ( .A(net39615), .Y(net39616) );
+  XOR3X2_LVT U1171 ( .A1(n435), .A2(n775), .A3(n433), .Y(n432) );
+  INVX1_LVT U1172 ( .A(n513), .Y(n82) );
+  INVX0_LVT U1173 ( .A(n776), .Y(n327) );
+  AO221X1_LVT U1174 ( .A1(n764), .A2(n777), .A3(n323), .A4(n25), .A5(net38594), 
+        .Y(n776) );
+  AO22X2_LVT U1175 ( .A1(n332), .A2(n333), .A3(n755), .A4(n334), .Y(n777) );
+  INVX0_LVT U1176 ( .A(n323), .Y(n778) );
+  NOR4X1_LVT U1177 ( .A1(\segwayMath_int/N44 ), .A2(\segwayMath_int/N43 ), 
+        .A3(\segwayMath_int/add_67/carry [12]), .A4(\segwayMath_int/N45 ), .Y(
+        n782) );
+  NBUFFX8_LVT U1178 ( .A(n830), .Y(net39540) );
+  NAND2X0_LVT U1179 ( .A1(n755), .A2(n295), .Y(n783) );
+  NAND2X0_LVT U1180 ( .A1(\segwayMath_int/N35 ), .A2(n330), .Y(n784) );
+  NAND3X0_LVT U1181 ( .A1(n783), .A2(n784), .A3(n62), .Y(n356) );
+  AO21X2_LVT U1182 ( .A1(n56), .A2(n52), .A3(n389), .Y(n418) );
+  AO22X1_LVT U1183 ( .A1(n444), .A2(n443), .A3(n666), .A4(n117), .Y(n786) );
+  AO22X1_LVT U1184 ( .A1(n588), .A2(n587), .A3(n656), .A4(n113), .Y(n787) );
+  NAND2X0_LVT U1185 ( .A1(n328), .A2(n776), .Y(n788) );
+  OAI22X2_LVT U1186 ( .A1(n806), .A2(n224), .A3(ptch_rt[7]), .A4(n667), .Y(
+        n444) );
+  XOR3X2_LVT U1187 ( .A1(net39661), .A2(
+        \PID_int/add_0_root_add_0_root_add_138_2/carry[10] ), .A3(
+        \PID_int/N32 ), .Y(\PID_int/PID_inter [10]) );
+  AO21X2_LVT U1188 ( .A1(ptch[6]), .A2(n623), .A3(net39492), .Y(
+        \PID_int/ptch_err_sat [6]) );
+  NBUFFX8_LVT U1189 ( .A(n829), .Y(net39480) );
+  NAND2X0_LVT U1190 ( .A1(\segwayMath_int/PID_SS_inter [13]), .A2(
+        \segwayMath_int/add_49/carry[5] ), .Y(n791) );
+  NAND2X0_LVT U1191 ( .A1(\segwayMath_int/steer_control_div[5] ), .A2(
+        \segwayMath_int/add_49/carry[5] ), .Y(n792) );
+  NAND3X0_LVT U1192 ( .A1(n791), .A2(n790), .A3(n792), .Y(
+        \segwayMath_int/add_49/carry[6] ) );
+  XOR2X1_LVT U1193 ( .A1(\segwayMath_int/PID_SS_inter [14]), .A2(
+        \segwayMath_int/steer_control_div[6] ), .Y(n793) );
+  XOR2X1_LVT U1194 ( .A1(n757), .A2(n793), .Y(
+        \segwayMath_int/lft_steer_cntrl [6]) );
+  NAND2X0_LVT U1195 ( .A1(\segwayMath_int/PID_SS_inter [14]), .A2(
+        \segwayMath_int/steer_control_div[6] ), .Y(n794) );
+  NAND2X0_LVT U1196 ( .A1(\segwayMath_int/PID_SS_inter [14]), .A2(
+        \segwayMath_int/add_49/carry[6] ), .Y(n795) );
+  NAND2X0_LVT U1197 ( .A1(\segwayMath_int/steer_control_div[6] ), .A2(
+        \segwayMath_int/add_49/carry[6] ), .Y(n796) );
+  NAND3X0_LVT U1198 ( .A1(n794), .A2(n795), .A3(n796), .Y(
+        \segwayMath_int/add_49/carry[7] ) );
+  DELLN2X2_LVT U1199 ( .A(\segwayMath_int/add_49/carry[5] ), .Y(n797) );
+  XNOR3X2_LVT U1200 ( .A1(n424), .A2(n389), .A3(n425), .Y(n369) );
+  XOR2X1_LVT U1201 ( .A1(\segwayMath_int/add_49/carry[1] ), .A2(
+        \segwayMath_int/steer_control_div[1] ), .Y(net39413) );
+  NAND2X0_LVT U1202 ( .A1(\segwayMath_int/add_49/carry[1] ), .A2(
+        \segwayMath_int/mult_35/A1[7] ), .Y(n798) );
+  NAND2X0_LVT U1203 ( .A1(\segwayMath_int/steer_control_div[1] ), .A2(
+        \segwayMath_int/mult_35/A1[7] ), .Y(n799) );
+  NAND2X0_LVT U1204 ( .A1(\segwayMath_int/steer_control_div[1] ), .A2(
+        \segwayMath_int/add_49/carry[1] ), .Y(n800) );
+  NAND3X0_LVT U1205 ( .A1(n800), .A2(n799), .A3(n798), .Y(
+        \segwayMath_int/add_49/carry[2] ) );
+  AO21X2_LVT U1206 ( .A1(\PID_int/PID_inter [4]), .A2(n785), .A3(n699), .Y(
+        n196) );
+  XOR2X1_LVT U1207 ( .A1(\segwayMath_int/PID_SS_inter [16]), .A2(n119), .Y(
+        n801) );
+  XOR2X1_LVT U1208 ( .A1(n801), .A2(net39896), .Y(
+        \segwayMath_int/rght_steer_cntrl [8]) );
+  NAND3X2_LVT U1209 ( .A1(n788), .A2(pwr_up), .A3(n323), .Y(n303) );
+  IBUFFX8_LVT U1210 ( .A(n820), .Y(net39339) );
+  AOI221X1_LVT U1211 ( .A1(n39), .A2(n159), .A3(n21), .A4(n294), .A5(n22), .Y(
+        n822) );
+  NOR4X1_LVT U1212 ( .A1(net38759), .A2(n22), .A3(net38760), .A4(net38758), 
+        .Y(n819) );
+  NBUFFX8_LVT U1213 ( .A(n823), .Y(lft_spd[5]) );
+  INVX2_LVT U1214 ( .A(n740), .Y(n7) );
+  NAND2X0_LVT U1215 ( .A1(n227), .A2(n773), .Y(n806) );
+  INVX0_LVT U1216 ( .A(n409), .Y(n47) );
+  INVX0_LVT U1217 ( .A(n303), .Y(n21) );
+  INVX0_LVT U1218 ( .A(n411), .Y(n807) );
+  XOR2X2_LVT U1219 ( .A1(n75), .A2(n484), .Y(n482) );
+  INVX0_LVT U1220 ( .A(n595), .Y(n104) );
+  INVX0_LVT U1221 ( .A(ptch_rt[11]), .Y(n114) );
+  INVX1_LVT U1222 ( .A(pwr_up), .Y(net38594) );
+  INVX0_LVT U1223 ( .A(n640), .Y(net39302) );
+  INVX1_LVT U1224 ( .A(net39302), .Y(net39303) );
+  AND2X1_LVT U1225 ( .A1(\PID_int/n15 ), .A2(n669), .Y(n640) );
+  INVX0_LVT U1226 ( .A(n424), .Y(n52) );
+  INVX1_LVT U1227 ( .A(n384), .Y(n83) );
+  INVX1_LVT U1228 ( .A(n393), .Y(n80) );
+  AND2X1_LVT U1229 ( .A1(n384), .A2(n383), .Y(net39294) );
+  AND2X1_LVT U1230 ( .A1(n378), .A2(n377), .Y(net39292) );
+  INVX1_LVT U1231 ( .A(n378), .Y(n91) );
+  INVX0_LVT U1232 ( .A(n367), .Y(n42) );
+  INVX0_LVT U1233 ( .A(n241), .Y(n15) );
+  INVX0_LVT U1234 ( .A(n417), .Y(n46) );
+  XOR2X1_LVT U1235 ( .A1(n415), .A2(n414), .Y(n445) );
+  OR2X1_LVT U1236 ( .A1(n412), .A2(n807), .Y(n409) );
+  INVX0_LVT U1237 ( .A(n415), .Y(n49) );
+  XNOR2X1_LVT U1238 ( .A1(n416), .A2(n411), .Y(n413) );
+  INVX0_LVT U1239 ( .A(n316), .Y(n27) );
+  INVX0_LVT U1240 ( .A(n541), .Y(n69) );
+  XNOR2X1_LVT U1241 ( .A1(n401), .A2(n402), .Y(n542) );
+  INVX1_LVT U1242 ( .A(n396), .Y(n81) );
+  XNOR2X1_LVT U1243 ( .A1(n403), .A2(n395), .Y(n400) );
+  XNOR2X1_LVT U1244 ( .A1(n387), .A2(n388), .Y(n405) );
+  INVX1_LVT U1245 ( .A(n404), .Y(n84) );
+  XNOR2X1_LVT U1246 ( .A1(n380), .A2(n379), .Y(n386) );
+  INVX0_LVT U1247 ( .A(n308), .Y(n26) );
+  INVX1_LVT U1248 ( .A(n385), .Y(n92) );
+  INVX0_LVT U1249 ( .A(n240), .Y(n17) );
+  AOI22X1_LVT U1250 ( .A1(n441), .A2(net39781), .A3(n440), .A4(n451), .Y(n433)
+         );
+  XOR2X1_LVT U1251 ( .A1(n335), .A2(n753), .Y(n334) );
+  INVX0_LVT U1252 ( .A(n485), .Y(n74) );
+  INVX1_LVT U1253 ( .A(\segwayMath_int/N65 ), .Y(net38717) );
+  INVX1_LVT U1254 ( .A(n339), .Y(n29) );
+  INVX1_LVT U1255 ( .A(n229), .Y(n128) );
+  INVX0_LVT U1256 ( .A(n605), .Y(n100) );
+  XOR2X1_LVT U1257 ( .A1(n252), .A2(n253), .Y(n249) );
+  XOR2X1_LVT U1258 ( .A1(n474), .A2(n475), .Y(n458) );
+  INVX0_LVT U1259 ( .A(n456), .Y(n65) );
+  INVX0_LVT U1260 ( .A(n458), .Y(n78) );
+  INVX0_LVT U1261 ( .A(n321), .Y(n30) );
+  INVX0_LVT U1262 ( .A(n306), .Y(n31) );
+  INVX0_LVT U1263 ( .A(n193), .Y(n66) );
+  INVX0_LVT U1264 ( .A(n466), .Y(n71) );
+  XOR2X1_LVT U1265 ( .A1(n319), .A2(n160), .Y(n317) );
+  INVX0_LVT U1266 ( .A(n314), .Y(n32) );
+  XOR2X1_LVT U1267 ( .A1(n420), .A2(n421), .Y(n423) );
+  INVX0_LVT U1268 ( .A(n490), .Y(n79) );
+  INVX0_LVT U1269 ( .A(n319), .Y(n25) );
+  INVX0_LVT U1270 ( .A(n499), .Y(n90) );
+  INVX0_LVT U1271 ( .A(n160), .Y(n39) );
+  AND2X1_LVT U1272 ( .A1(n379), .A2(n380), .Y(net39232) );
+  INVX0_LVT U1273 ( .A(n486), .Y(n73) );
+  INVX0_LVT U1274 ( .A(n500), .Y(n88) );
+  INVX0_LVT U1275 ( .A(n455), .Y(n95) );
+  INVX0_LVT U1276 ( .A(n219), .Y(n93) );
+  INVX0_LVT U1277 ( .A(n514), .Y(n72) );
+  INVX0_LVT U1278 ( .A(n518), .Y(n70) );
+  XOR2X1_LVT U1279 ( .A1(\segwayMath_int/mult_35/CARRYB[7][8] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][9] ), .Y(n395) );
+  INVX1_LVT U1280 ( .A(n492), .Y(n53) );
+  XOR2X1_LVT U1281 ( .A1(\segwayMath_int/mult_35/CARRYB[7][9] ), .A2(
+        \segwayMath_int/mult_35/SUMB[7][10] ), .Y(n388) );
+  XNOR2X1_LVT U1282 ( .A1(n376), .A2(\segwayMath_int/mult_35/CARRYB[7][10] ), 
+        .Y(n380) );
+  NBUFFX2_LVT U1283 ( .A(n8), .Y(n812) );
+  NBUFFX2_LVT U1284 ( .A(n8), .Y(n813) );
+  XOR2X1_LVT U1285 ( .A1(net38619), .A2(n556), .Y(n555) );
+  AOI21X1_LVT U1286 ( .A1(n639), .A2(n140), .A3(n640), .Y(n224) );
+  XNOR2X1_LVT U1287 ( .A1(n194), .A2(n195), .Y(
+        \segwayMath_int/mult_35/SUMB[1][4] ) );
+  XNOR3X1_LVT U1288 ( .A1(\segwayMath_int/mult_35/CARRYB[2][3] ), .A2(n95), 
+        .A3(n193), .Y(\segwayMath_int/mult_35/SUMB[3][3] ) );
+  INVX1_LVT U1289 ( .A(net38616), .Y(net38628) );
+  AO21X1_LVT U1290 ( .A1(n639), .A2(n141), .A3(net39303), .Y(n443) );
+  XNOR2X1_LVT U1291 ( .A1(n197), .A2(n198), .Y(
+        \segwayMath_int/mult_35/SUMB[1][3] ) );
+  XNOR2X1_LVT U1292 ( .A1(n199), .A2(n200), .Y(
+        \segwayMath_int/mult_35/SUMB[1][2] ) );
+  XNOR2X1_LVT U1293 ( .A1(n201), .A2(n202), .Y(
+        \segwayMath_int/mult_35/SUMB[1][1] ) );
+  INVX0_LVT U1294 ( .A(\segwayMath_int/sub_51/carry[1] ), .Y(n63) );
+  INVX8_LVT U1295 ( .A(net38614), .Y(net38617) );
+  INVX1_LVT U1296 ( .A(net38614), .Y(net38620) );
+  INVX1_LVT U1297 ( .A(net38614), .Y(net38618) );
+  INVX1_LVT U1298 ( .A(net38615), .Y(net38622) );
+  INVX1_LVT U1299 ( .A(net38614), .Y(net38619) );
+  XNOR2X1_LVT U1300 ( .A1(\segwayMath_int/steer_pot_inter[4] ), .A2(n230), .Y(
+        n229) );
+  XOR2X1_LVT U1301 ( .A1(n165), .A2(n166), .Y(
+        \segwayMath_int/steer_pot_inter[9] ) );
+  INVX1_LVT U1302 ( .A(n629), .Y(n8) );
+  XOR2X1_LVT U1303 ( .A1(net38665), .A2(n546), .Y(n544) );
+  XOR2X1_LVT U1304 ( .A1(net38660), .A2(n548), .Y(n547) );
+  XOR2X1_LVT U1305 ( .A1(net38655), .A2(n550), .Y(n549) );
+  XOR2X1_LVT U1306 ( .A1(net38650), .A2(n552), .Y(n551) );
+  XOR2X1_LVT U1307 ( .A1(n817), .A2(n554), .Y(n553) );
+  XOR2X1_LVT U1308 ( .A1(net38610), .A2(n558), .Y(n557) );
+  INVX0_LVT U1309 ( .A(ptch[15]), .Y(n108) );
+  INVX0_LVT U1310 ( .A(ptch_rt[10]), .Y(n115) );
+  INVX0_LVT U1311 ( .A(ptch_rt[9]), .Y(n116) );
+  INVX0_LVT U1312 ( .A(ptch_rt[8]), .Y(n117) );
+  INVX1_LVT U1313 ( .A(ptch_rt[13]), .Y(n112) );
+  INVX1_LVT U1314 ( .A(ptch_rt[14]), .Y(n111) );
+  INVX1_LVT U1315 ( .A(ptch_rt[12]), .Y(n113) );
+  XNOR3X1_LVT U1316 ( .A1(n651), .A2(ptch_rt[14]), .A3(n650), .Y(\PID_int/N30 ) );
+  XNOR3X1_LVT U1317 ( .A1(n587), .A2(ptch_rt[12]), .A3(n588), .Y(n531) );
+  XNOR3X1_LVT U1318 ( .A1(n658), .A2(ptch_rt[11]), .A3(n765), .Y(\PID_int/N27 ) );
+  XNOR2X1_LVT U1319 ( .A1(n597), .A2(\PID_int/ptch_err_sat [2]), .Y(
+        \PID_int/P_term [4]) );
+  XNOR3X1_LVT U1320 ( .A1(n661), .A2(ptch_rt[10]), .A3(n660), .Y(\PID_int/N26 ) );
+  XNOR3X1_LVT U1321 ( .A1(n224), .A2(ptch_rt[7]), .A3(n806), .Y(n221) );
+  XNOR3X1_LVT U1322 ( .A1(n664), .A2(ptch_rt[9]), .A3(n786), .Y(\PID_int/N25 )
+         );
+  XNOR3X1_LVT U1323 ( .A1(n443), .A2(ptch_rt[8]), .A3(n444), .Y(n296) );
+  INVX0_LVT U1324 ( .A(ptch[9]), .Y(n109) );
+  INVX1_LVT U1325 ( .A(n840), .Y(net38614) );
+  NBUFFX2_LVT U1326 ( .A(n839), .Y(n817) );
+  INVX1_LVT U1327 ( .A(n840), .Y(net38616) );
+  NBUFFX2_LVT U1328 ( .A(n838), .Y(net38650) );
+  NBUFFX2_LVT U1329 ( .A(n837), .Y(net38655) );
+  NBUFFX2_LVT U1330 ( .A(n836), .Y(net38660) );
+  XNOR2X1_LVT U1331 ( .A1(n174), .A2(n175), .Y(
+        \segwayMath_int/steer_pot_inter[5] ) );
+  INVX1_LVT U1332 ( .A(steer_pot[10]), .Y(n130) );
+  INVX1_LVT U1333 ( .A(steer_pot[11]), .Y(n129) );
+  INVX1_LVT U1334 ( .A(steer_pot[9]), .Y(n131) );
+  XNOR2X1_LVT U1335 ( .A1(n360), .A2(n361), .Y(
+        \segwayMath_int/steer_pot_inter[4] ) );
+  XNOR2X1_LVT U1336 ( .A1(n172), .A2(n173), .Y(
+        \segwayMath_int/steer_pot_inter[6] ) );
+  XNOR2X1_LVT U1337 ( .A1(n170), .A2(n171), .Y(
+        \segwayMath_int/steer_pot_inter[7] ) );
+  XNOR2X1_LVT U1338 ( .A1(n358), .A2(n359), .Y(n230) );
+  XNOR2X1_LVT U1339 ( .A1(n167), .A2(n168), .Y(
+        \segwayMath_int/steer_pot_inter[8] ) );
+  NBUFFX2_LVT U1340 ( .A(n835), .Y(net38665) );
+  XOR2X1_LVT U1341 ( .A1(steer_pot[10]), .A2(n176), .Y(
+        \segwayMath_int/steer_pot_inter[10] ) );
+  NBUFFX2_LVT U1342 ( .A(n834), .Y(n815) );
+  INVX1_LVT U1343 ( .A(net38608), .Y(net38596) );
+  INVX2_LVT U1344 ( .A(en_steer), .Y(net38608) );
+  XOR2X1_LVT U1345 ( .A1(\PID_int/ptch_err_sat [0]), .A2(
+        \PID_int/integrator [0]), .Y(\PID_int/ptch_err_sat_SEA [0]) );
+  OR3X1_LVT U1346 ( .A1(\PID_int/n15 ), .A2(\PID_int/ptch_err_sat_SEA [17]), 
+        .A3(n536), .Y(n631) );
+  NBUFFX8_LVT U1347 ( .A(n841), .Y(net38609) );
+  NBUFFX8_LVT U1348 ( .A(n839), .Y(ss_tmr[2]) );
+  NBUFFX8_LVT U1349 ( .A(n838), .Y(net38649) );
+  NBUFFX8_LVT U1350 ( .A(n837), .Y(net38654) );
+  NBUFFX8_LVT U1351 ( .A(n836), .Y(net38659) );
+  NBUFFX8_LVT U1352 ( .A(n835), .Y(net38664) );
+  NBUFFX8_LVT U1353 ( .A(n834), .Y(ss_tmr[7]) );
+  XOR2X1_LVT U1354 ( .A1(n560), .A2(n695), .Y(n559) );
+  XOR2X1_LVT U1355 ( .A1(n562), .A2(n687), .Y(n561) );
+  XOR2X1_LVT U1356 ( .A1(n564), .A2(n689), .Y(n563) );
+  XOR2X1_LVT U1357 ( .A1(n566), .A2(n688), .Y(n565) );
+  XOR2X1_LVT U1358 ( .A1(n568), .A2(n694), .Y(n567) );
+  XOR2X1_LVT U1359 ( .A1(n570), .A2(n693), .Y(n569) );
+  XOR2X1_LVT U1360 ( .A1(n572), .A2(n692), .Y(n571) );
+  XOR2X1_LVT U1361 ( .A1(n574), .A2(n691), .Y(n573) );
+  XOR2X1_LVT U1362 ( .A1(n576), .A2(n690), .Y(n575) );
+  XOR2X1_LVT U1363 ( .A1(n150), .A2(n686), .Y(n577) );
+  AND2X1_LVT U1364 ( .A1(n808), .A2(n739), .Y(n752) );
+  AND2X1_LVT U1366 ( .A1(\PID_int/integrator [0]), .A2(
+        \PID_int/ptch_err_sat [0]), .Y(\PID_int/add_148/carry [1]) );
+  AO22X1_LVT U1367 ( .A1(\segwayMath_int/lft_steer_cntrl [2]), .A2(net38596), 
+        .A3(\segwayMath_int/PID_SS_inter [10]), .A4(net38608), .Y(n294) );
+  INVX0_LVT U1368 ( .A(n510), .Y(n87) );
+  XNOR2X1_LVT U1369 ( .A1(n593), .A2(net39901), .Y(\PID_int/P_term [7]) );
+  NBUFFX8_LVT U1370 ( .A(n827), .Y(net38784) );
+  OAI21X1_LVT U1371 ( .A1(n317), .A2(n301), .A3(n298), .Y(n318) );
+  INVX0_LVT U1372 ( .A(n301), .Y(n19) );
+  NBUFFX8_LVT U1373 ( .A(net40638), .Y(net38756) );
+  XNOR3X1_LVT U1374 ( .A1(n654), .A2(ptch_rt[13]), .A3(n787), .Y(\PID_int/N29 ) );
+  XNOR3X1_LVT U1375 ( .A1(n648), .A2(ptch_rt[15]), .A3(n647), .Y(\PID_int/N31 ) );
+  XOR2X1_LVT U1376 ( .A1(n773), .A2(n227), .Y(n226) );
+  NBUFFX2_LVT U1377 ( .A(\PID_int/ptch_err_sat [1]), .Y(net38738) );
+  XOR2X1_LVT U1378 ( .A1(\PID_int/ptch_err_sat [0]), .A2(n296), .Y(n442) );
+  XOR2X1_LVT U1379 ( .A1(\PID_int/ptch_err_sat [0]), .A2(net38738), .Y(
+        \PID_int/P_term [3]) );
+  XOR2X1_LVT U1380 ( .A1(\PID_int/ptch_err_sat [5]), .A2(net39860), .Y(n590)
+         );
+  AO21X2_LVT U1381 ( .A1(\PID_int/PID_inter [10]), .A2(n785), .A3(n699), .Y(
+        n183) );
+  INVX0_LVT U1382 ( .A(n261), .Y(net38735) );
+  XOR2X1_LVT U1383 ( .A1(n273), .A2(n274), .Y(n272) );
+  XOR2X1_LVT U1384 ( .A1(n273), .A2(n275), .Y(n271) );
+  AO22X1_LVT U1385 ( .A1(net38717), .A2(n268), .A3(net38721), .A4(n57), .Y(
+        n284) );
+  INVX0_LVT U1386 ( .A(n507), .Y(n75) );
+  INVX0_LVT U1387 ( .A(n508), .Y(n85) );
+  INVX0_LVT U1388 ( .A(n484), .Y(n86) );
+  NAND2X0_LVT U1389 ( .A1(n103), .A2(n627), .Y(n810) );
+  NAND2X0_LVT U1390 ( .A1(\PID_int/ptch_err_sat [6]), .A2(n101), .Y(n811) );
+  NAND2X0_LVT U1391 ( .A1(n810), .A2(n811), .Y(n625) );
+  INVX0_LVT U1392 ( .A(n627), .Y(n101) );
+  INVX0_LVT U1393 ( .A(n622), .Y(n102) );
+  AOI21X2_LVT U1394 ( .A1(\PID_int/integrator [17]), .A2(n668), .A3(n640), .Y(
+        n639) );
+  NAND3X2_LVT U1395 ( .A1(n630), .A2(n631), .A3(vld), .Y(n629) );
+  AND3X2_LVT U1396 ( .A1(net38590), .A2(n815), .A3(n543), .Y(n545) );
+  AO21X2_LVT U1397 ( .A1(n371), .A2(en_steer), .A3(n292), .Y(n330) );
+endmodule
+

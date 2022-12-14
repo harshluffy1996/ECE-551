@@ -1,0 +1,128 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/altera/16.0
+vbalance_cntrl
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1668803811
+!i10b 1
+!s100 @bdRAT_an=Y]hZm5_:=S10
+IzbKSSalU7;O[=3ALF1Sj52
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 balance_cntrl_sv_unit
+S1
+Z3 dH:/ECE 551/HomeWorks/HW4/Q5
+w1668803767
+8H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl.sv
+FH:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl.sv
+L0 1
+Z4 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z5 !s108 1668803811.000000
+!s107 H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl.sv|
+!i113 1
+Z6 o-work work -sv
+vbalance_cntrl_chk_tb
+R0
+R1
+!i10b 1
+!s100 D5FD3RH_o3V<IZm=U0f1d0
+I^CXo;So4f7zE1mG1A2O0S1
+R2
+!s105 balance_cntrl_chk_tb_sv_unit
+S1
+R3
+w1667680530
+8H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl_chk_tb.sv
+FH:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl_chk_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl_chk_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q5/balance_cntrl_chk_tb.sv|
+!i113 1
+R6
+vPID
+R0
+R1
+!i10b 1
+!s100 :LHE^U29c3=Y0[c^cBNcB3
+I<@IkI]860j===[;;;Gb@z1
+R2
+!s105 PID_sv_unit
+S1
+R3
+w1668803651
+8H:/ECE 551/HomeWorks/HW4/Q5/PID.sv
+FH:/ECE 551/HomeWorks/HW4/Q5/PID.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q5/PID.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q5/PID.sv|
+!i113 1
+R6
+n@p@i@d
+vPID_dbg_tb
+R0
+R1
+!i10b 1
+!s100 =F5O8TKOOWg^RGlLzn]GI1
+I<h4JX2[?BI>7dL_LnY_WX1
+R2
+!s105 PID_fastsim_tb_sv_unit
+S1
+R3
+w1667399162
+8H:/ECE 551/HomeWorks/HW4/Q5/PID_fastsim_tb.sv
+FH:/ECE 551/HomeWorks/HW4/Q5/PID_fastsim_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q5/PID_fastsim_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q5/PID_fastsim_tb.sv|
+!i113 1
+R6
+n@p@i@d_dbg_tb
+vsegwayMath
+R0
+R1
+!i10b 1
+!s100 afDhlliLhVR>c0Hg^S4]X0
+IaU=EIPmgGLd6Snjbfh``S3
+R2
+!s105 segwayMath_sv_unit
+S1
+R3
+w1668803700
+8H:/ECE 551/HomeWorks/HW4/Q5/segwayMath.sv
+FH:/ECE 551/HomeWorks/HW4/Q5/segwayMath.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q5/segwayMath.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q5/segwayMath.sv|
+!i113 1
+R6
+nsegway@math

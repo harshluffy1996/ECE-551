@@ -1,0 +1,91 @@
+module balance_cntrl_chk_tb();
+
+reg signed [15:0] ptch;
+reg signed [15:0] ptch_rt;
+reg [11:0]steer_pot;
+reg clk, rt_n, vld, rider_off, en_steer, pwr_up, rst_n;
+wire signed [11:0]lft_spd;
+wire signed [11:0] rght_spd;
+wire too_fast;
+
+localparam mem_depth = 1500;
+//Stimulus from the hex file
+reg [48:0]stim[0:mem_depth-1];
+//Expected Response
+reg [24:0]resp[0:mem_depth-1];
+reg [7:0]ss_tmr;
+logic [10:0] wrong_values;
+integer k;
+
+balance_cntrl #(.fast_sim(1)) iDUT(.ss_tmr(ss_tmr),.rider_off(rider_off),.clk(clk), .rst_n(rst_n), .vld(vld), .ptch(ptch), .ptch_rt(ptch_rt), 
+				.pwr_up(pwr_up), .steer_pot(steer_pot), .en_steer(en_steer), 
+				.lft_spd(lft_spd), .rght_spd(rght_spd), .too_fast(too_fast));
+
+//setting up the clock
+always begin
+	#5 clk <= ~clk;
+end
+
+initial begin
+	//setting default values
+	clk = 0;
+	wrong_values = 0;
+
+//reading data from hex files
+$readmemh("balance_cntrl_stim.hex", stim);
+$readmemh("balance_cntrl_resp.hex", resp);
+
+//forcing ss_tmr to8'hFF
+force iDUT.ss_tmr = 8'hFF;
+
+repeat(1) @(posedge clk);
+//using for loop to go through every value
+for(k = 0; k < mem_depth; k++) begin	
+	steer_pot = stim[k][12:1];
+	pwr_up = stim[k][14];
+	rider_off = stim[k][13];
+	ptch = stim[k][46:31];
+	vld = stim[k][47];
+	ptch_rt = stim[k][30:15];
+	en_steer = stim[k][0];
+	rst_n = stim[k][48];
+
+@(posedge clk);
+#1;
+//comparing the righ speed with the expected value		
+if(rght_spd === resp[k][12:1]) begin
+	$display("%d correct rght_spd ", k);
+end
+else begin
+	$display("%d incorrect rght_spd ",k);
+end	
+
+//comparing the left speed with the expected value
+if(lft_spd === resp[k][24:13]) begin
+	$display("%d correct lft_spd", k);
+end
+else begin
+	$display("%d incorrect lft_spd",k);
+end
+
+//comparing value of too_fast with the expected value	
+if(too_fast === resp[k][0]) begin
+	$display("%d correct too_fast", k);
+	wrong_values = wrong_values + 1;
+end
+else begin
+	$display("%d INCORRECT too_fast", k);
+end
+end
+
+if(wrong_values === mem_depth) begin
+	$display("All values matched with Expected Values!");
+end
+else begin
+	$display("Better Luck Next Time %d passed.", wrong_values);
+end
+$stop();
+
+end
+
+endmodule

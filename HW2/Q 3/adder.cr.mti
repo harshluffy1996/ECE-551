@@ -1,0 +1,18 @@
+{H:/ECE 551/HW2/Q 3/adder.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HW2/Q 3/adder.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module full_adder_behavioral
+-- Compiling module full_adder_dataflow
+-- Compiling module full_adder_1bit
+
+Top level modules:
+	full_adder_behavioral
+	full_adder_dataflow
+
+} {} {}} {H:/ECE 551/HW2/Q 3/adder_tb.sv} {1 {vlog -work work -sv -stats=none {H:/ECE 551/HW2/Q 3/adder_tb.sv}
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module full_adder_tb
+
+Top level modules:
+	full_adder_tb
+
+} {} {}}

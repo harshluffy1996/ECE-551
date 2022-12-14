@@ -1,0 +1,18 @@
+HW2_Extra
+
+Q.6 
+
+a)LSM6DS3H uses SPI and I2C which are subject to general
+ operating conditions for Vdd and Top.
+
+b)The gyro output Angular Rate.
+
+c)Yes, LSM6DS3H can support an output data rate of 200 readings per second. 
+The range for Linear acceleration output data rate is 12.5Hz to 6664Hz and 
+for Angular rate output data rate 12.5 Hz to 3332Hz.
+
+d)The LSM6DS3H has an internal clock that can be used to synchronize with the Verilog.
+The clock can be configured to output a signal when a new set of measurements is ready.
+Also, it has two interrupt output pins INT1 & INT2. These pins are active-low, open-drain 
+outputs. If there is a new set of measurements is ready then the DRDY (Data Ready) flag 
+will set in one of the interrupts.

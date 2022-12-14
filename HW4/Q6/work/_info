@@ -1,0 +1,82 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dH:/ECE 551/HomeWorks/HW4/Q5
+vSPI_iNEMO1
+Z0 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+Z1 !s110 1667621975
+!i10b 1
+!s100 0e?R88bhUTJPPBd7c23ZQ1
+I7N`bgG1OVJj6MNLmg;D<31
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s105 SPI_iNEMO1_sv_unit
+S1
+Z3 dH:/ECE 551/HomeWorks/HW4/Q6
+w1667357411
+8H:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv
+FH:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv
+L0 1
+Z4 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z5 !s108 1667621975.000000
+!s107 H:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q6/SPI_iNEMO1.sv|
+!i113 1
+Z6 o-work work -sv
+n@s@p@i_i@n@e@m@o1
+vSPI_mnrch
+R0
+R1
+!i10b 1
+!s100 53n4S0dJakKa5ACBa95;N3
+IAK]biVC;XU5n2L[mW5G=C3
+R2
+!s105 SPI_mnrch_sv_unit
+S1
+R3
+w1667621953
+8H:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv
+FH:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q6/SPI_mnrch.sv|
+!i113 1
+R6
+n@s@p@i_mnrch
+vSPI_mnrch_tb
+R0
+R1
+!i10b 1
+!s100 XbKKULG>W>9Lk:SzYQeQn0
+IN[OHScAe8G4TohNlcY1@U2
+R2
+!s105 spi_mnrch_tb_sv_unit
+S1
+R3
+w1667615128
+8H:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv
+FH:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv
+L0 1
+R4
+r1
+!s85 0
+31
+R5
+!s107 H:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|H:/ECE 551/HomeWorks/HW4/Q6/spi_mnrch_tb.sv|
+!i113 1
+R6
+n@s@p@i_mnrch_tb
